@@ -13,5 +13,10 @@ abstract class Entity
         $this->entityName = end($nameParts);
     }
 
+    public function getEntityName(): string
+    {
+        return $this->entityName;
+    }
+
 
 }
