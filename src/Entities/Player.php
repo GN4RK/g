@@ -11,6 +11,8 @@ class Player extends Entity
     private int $health;
     private int $attack;
     private int $defense;
+    private int $experience;
+    private int $gold;
 
 
     public function __construct(string $name, int $health, int $attack, int $defense)
@@ -22,6 +24,8 @@ class Player extends Entity
         $this->attack = $attack;
         $this->defense = $defense;
         $this->level = 1;
+        $this->experience = 0;
+        $this->gold = 10;
 
     }
 
@@ -50,6 +54,16 @@ class Player extends Entity
         return $this->defense;
     }
 
+    public function getExperience(): int
+    {
+        return $this->experience;
+    }
+
+    public function getGold(): int
+    {
+        return $this->gold;
+    }
+
     public function setName(string $name): void
     {
         $this->name = $name;
@@ -75,9 +89,40 @@ class Player extends Entity
         $this->defense = $defense;
     }
 
+    public function setExperience(int $experience): void
+    {
+        $this->experience = $experience;
+    }
+
+    public function setGold(int $gold): void
+    {
+        $this->gold = $gold;
+    }
+
+    public function levelUp(): void
+    {
+        $this->level++;
+        $this->health += 10;
+        $this->attack += 5;
+        $this->defense += 5;
+    }
+
     public function __toString(): string
     {
         return "Player: $this->name, Level: $this->level, Health: $this->health, Attack: $this->attack, Defense: $this->defense";
+    }
+
+    public function displayStats(): array
+    {
+        return [
+            "Player    : $this->name",
+            "Level     : $this->level",
+            "Health    : $this->health",
+            "Attack    : $this->attack",
+            "Defense   : $this->defense",
+            "Experience: $this->experience",
+            "Gold      : $this->gold"
+        ];
     }
 
 }
