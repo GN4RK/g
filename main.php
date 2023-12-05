@@ -77,6 +77,9 @@ function validateStats(Player $player): bool
 
 function createPlayer($playerName): Player
 {
+    if ($playerName == 'test') {
+        return new Player($playerName, 50, 25, 25);
+    }
     $health = readIntInput('Enter your health: ');
     $attack = readIntInput('Enter your attack: ');
     $defense = readIntInput('Enter your defense: ');
@@ -108,6 +111,27 @@ function main(): void
 
     printLineWithBreak('Your stats are valid');
     printLineWithBreak($player);
+
+    // main loop
+    while (true) {
+        $choice = readIntInput('What do you want to do? (1: Find Combat, 2: Check stats, 3: Quit): ');
+        switch ($choice) {
+            case 1:
+                printLineWithBreak('Searching for combat...');
+
+
+                break;
+            case 2:
+                printLinesWithBreak($player->displayStats());
+                break;
+            case 3:
+                printLineWithBreak('Bye');
+                exit;
+            default:
+                printLineWithBreak('Invalid choice');
+                break;
+        }
+    }
 }
 
 main();
