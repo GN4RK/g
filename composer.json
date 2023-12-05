@@ -1,0 +1,17 @@
+{
+    "name": "yoann.leonard/g",
+    "autoload": {
+        "psr-4": {
+            "YoannLeonard\\G\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "yoann.leonard",
+            "email": "yoann.leonard@gmail.com"
+        }
+    ],
+    "require": {
+        "ext-readline": "*"
+    }
+}
