@@ -2,8 +2,16 @@
 
 namespace YoannLeonard\G;
 
-abstract class Entity {
+abstract class Entity
+{
     private string $entityName;
+
+    public function __construct()
+    {
+        $entityClassPath = get_class($this);
+        $nameParts = explode('\\', $entityClassPath);
+        $this->entityName = end($nameParts);
+    }
 
 
 }
