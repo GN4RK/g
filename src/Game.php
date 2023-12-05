@@ -2,7 +2,7 @@
 
 namespace YoannLeonard\G;
 
-use YoannLeonard\G\Entities\Player;
+use YoannLeonard\G\Entity\Player;
 
 // singleton class
 class Game
@@ -105,7 +105,7 @@ class Game
             switch ($choice) {
                 case 1:
                     printLineWithBreak('Searching for combat...');
-                    
+
 
                     break;
                 case 2:

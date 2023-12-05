@@ -1,6 +1,6 @@
 <?php
 
-namespace YoannLeonard\G\Entities;
+namespace YoannLeonard\G\Entity;
 
 use YoannLeonard\G\Entity;
 
