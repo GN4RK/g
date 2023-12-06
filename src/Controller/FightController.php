@@ -2,7 +2,7 @@
 
 namespace YoannLeonard\G\Controller;
 
-use YoannLeonard\G\Controller;
+use YoannLeonard\G\Controller\Controller;
 use YoannLeonard\G\model\Entity\Player;
 use YoannLeonard\G\model\Entity;
 use YoannLeonard\G\model\Entity\Fight;
@@ -37,18 +37,26 @@ class FightController extends Controller
         $player = $fight->getPlayer();
         $entity = $fight->getEntity();
 
-
-
-
         while ($player->isAlive() && $entity->isAlive()) {
             printLine('Turn ' . $fight->getTurn() . ':');
             printLine($player->getName() . ' has ' . $player->getHealth() . ' health left.');
             printLine($entity->getEntityName() . ' has ' . $entity->getHealth() . ' health left.');
 
+            $choice = Game::getInstance()->askChoice([
+                '1. Attack',
+                '2. Run away'
+            ]);
+
+            if ($choice == 2) {
+                printLine('You ran away!');
+                return;
+            }
+
             $this->attack($player, $entity);
             $this->attack($entity, $player);
 
             $fight->incrementTurn();
+            readline('Press enter to continue...');
         }
 
         if ($player->isAlive()) {
@@ -65,5 +73,6 @@ class FightController extends Controller
             $damage = 1;
         }
         $defender->setHealth($defender->getHealth() - $damage);
+        printLine($attacker->getEntityName() . ' attacked ' . $defender->getEntityName() . ' for ' . $damage . ' damage.');
     }
 }

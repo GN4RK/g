@@ -11,12 +11,16 @@ function readInput(string $prompt = ''): string
     return readline();
 }
 
-function readIntInput(string $prompt = ''): int
+function readIntInput(string $prompt = '', int $min = 0, int $max = 100): int
 {
-    $input = readInput($prompt);
+    $input = readInput($prompt, $min, $max);
     if (!is_numeric($input)) {
         printLine('Please enter a valid integer');
-        return readIntInput($prompt);
+        return readIntInput($prompt, $min, $max);
+    }
+    if ($input < $min || $input > $max) {
+        printLine('Please enter a valid integer between ' . $min . ' and ' . $max);
+        return readIntInput($prompt, $min, $max);
     }
     return (int)$input;
 }

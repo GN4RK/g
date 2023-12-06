@@ -2,6 +2,7 @@
 
 namespace YoannLeonard\G;
 
+use Exception;
 use YoannLeonard\G\Controller\FightController;
 use YoannLeonard\G\model\Entity\Player;
 use YoannLeonard\G\model\Entity\Rat;
@@ -39,9 +40,9 @@ class Game
         if ($playerName == 'test') {
             return new Player($playerName, 50, 25, 25);
         }
-        $health = readIntInput('Enter your health: ');
-        $attack = readIntInput('Enter your attack: ');
-        $defense = readIntInput('Enter your defense: ');
+        $health = readIntInput('Enter your health: ', 50, 98);
+        $attack = readIntInput('Enter your attack: ', 1, 49);
+        $defense = readIntInput('Enter your defense: ', 1, 49);
 
         $player = new Player($playerName, $health, $attack, $defense);
 
@@ -85,22 +86,11 @@ class Game
     public function start(): void
     {
         printLineWithBreak('Welcome to the game');
-        printLines([
+
+        $choice = $this->askChoice([
             '1: Start a new game',
             '2: Load a game'
         ]);
-        $choice = readIntInput('Enter your choice: ');
-        printLineWithBreak('');
-
-        while ($choice < 1 || $choice > 2) {
-            printLineWithBreak('/!\ Invalid choice');
-            printLines([
-                '1: Start a new game',
-                '2: Load a game'
-            ]);
-            $choice = readIntInput('Enter your choice: ');
-            printLineWithBreak('');
-        }
 
         if ($choice == 1) {
             $this->newGame();
@@ -108,16 +98,22 @@ class Game
             $this->loadGame();
         }
 
-        // main loop
-        while (true) {
-            printLines([
-                'What do you want to do?',
+        $this->mainLoop();
+    }
+
+    function mainLoop()
+    {
+        $fightController = FightController::getInstance();
+        
+        while ($this->getPlayer()->isAlive()) {
+
+            $choice = $this->askChoice([
                 '1: Shopping',
                 '2: Find Combat',
                 '3: Check stats',
                 '4: Save and quit'
             ]);
-            $choice = readIntInput('Enter your choice: ');
+
             switch ($choice) {
                 case 1:
                     printLineWithBreak('Shopping not implemented yet');
@@ -129,9 +125,9 @@ class Game
                     $enemy = new Rat();
 
 
-                    $fight = FightController::getInstance()->createFight($this->getPlayer(), $enemy);
+                    $fight = $fightController->createFight($this->getPlayer(), $enemy);
                     printLineWithBreak('A fight has started between ' . $fight->getPlayer()->getName() . ' and ' . $fight->getEntity()->getEntityName() . '!');
-                    FightController::getInstance()->startFight($fight);
+                    $fightController->startFight($fight);
 
 
                     break;
@@ -146,6 +142,9 @@ class Game
                     break;
             }
         }
+
+        printLineWithBreak('You died');
+        printLineWithBreak('Game over');
     }
 
     function newGame()
@@ -170,23 +169,43 @@ class Game
 
     function save()
     {
-        // save the Player object to a file
         $player = $this->getPlayer();
-        
         $playerData = serialize($player);
         file_put_contents('player.txt', $playerData);
-
-
+        printLineWithBreak('Player saved');
     }
 
     function loadGame()
     {
-        // load the Player object from a file
         $playerData = file_get_contents('player.txt');
         $player = unserialize($playerData);
         $this->setPlayer($player);
         printLineWithBreak('Player loaded');
         printLinesWithBreak($this->getPlayer()->displayStats());
+    }
+
+    function askChoice(array $choices, int $min = 1, int $max = 100): int
+    {
+        if ($max == 100) {
+            $max = count($choices);
+        }
+
+        if ($min < 1) {
+            $min = 1;
+        }
+
+        if ($max > count($choices)) {
+            $max = count($choices);
+        }
+        
+        if ($min > $max) {
+            throw new Exception('Min can\'t be greater than max');
+        }
+
+        printLines(array_merge(['What do you want to do?'], $choices));
+
+        $choice = readIntInput('> Your choice: ', $min, $max);
+        return $choice;
     }
         
 }

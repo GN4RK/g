@@ -1,6 +1,8 @@
 <?php
 
-namespace YoannLeonard\G;
+namespace YoannLeonard\G\Controller;
+
+use YoannLeonard\G\Game;
 
 abstract class Controller
 {
