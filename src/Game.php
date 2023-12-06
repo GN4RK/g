@@ -3,8 +3,8 @@
 namespace YoannLeonard\G;
 
 use YoannLeonard\G\Controller\FightController;
-use YoannLeonard\G\Entity\Player;
-use YoannLeonard\G\Entity\Rat;
+use YoannLeonard\G\model\Entity\Player;
+use YoannLeonard\G\model\Entity\Rat;
 
 // singleton class
 class Game
@@ -45,8 +45,6 @@ class Game
 
         $player = new Player($playerName, $health, $attack, $defense);
 
-        var_dump($player);
-
         if (!$this->validateStats($player)) {
             return $this->createPlayer($playerName);
         }
@@ -56,7 +54,6 @@ class Game
 
     public function validateStats(Player $player): bool
     {
-        var_dump($player->getHealth());
         $health = $player->getHealth();
         $attack = $player->getAttack();
         $defense = $player->getDefense();
@@ -88,6 +85,71 @@ class Game
     public function start(): void
     {
         printLineWithBreak('Welcome to the game');
+        printLines([
+            '1: Start a new game',
+            '2: Load a game'
+        ]);
+        $choice = readIntInput('Enter your choice: ');
+        printLineWithBreak('');
+
+        while ($choice < 1 || $choice > 2) {
+            printLineWithBreak('/!\ Invalid choice');
+            printLines([
+                '1: Start a new game',
+                '2: Load a game'
+            ]);
+            $choice = readIntInput('Enter your choice: ');
+            printLineWithBreak('');
+        }
+
+        if ($choice == 1) {
+            $this->newGame();
+        } else {
+            $this->loadGame();
+        }
+
+        // main loop
+        while (true) {
+            printLines([
+                'What do you want to do?',
+                '1: Shopping',
+                '2: Find Combat',
+                '3: Check stats',
+                '4: Save and quit'
+            ]);
+            $choice = readIntInput('Enter your choice: ');
+            switch ($choice) {
+                case 1:
+                    printLineWithBreak('Shopping not implemented yet');
+                    break;
+                case 2:
+                    printLineWithBreak('Searching for combat...');
+                    
+                    // $enemy = randomEnemy();
+                    $enemy = new Rat();
+
+
+                    $fight = FightController::getInstance()->createFight($this->getPlayer(), $enemy);
+                    printLineWithBreak('A fight has started between ' . $fight->getPlayer()->getName() . ' and ' . $fight->getEntity()->getEntityName() . '!');
+                    FightController::getInstance()->startFight($fight);
+
+
+                    break;
+                case 3:
+                    printLinesWithBreak($this->getPlayer()->displayStats());
+                    break;
+                case 4:
+                    $this->save();                    
+                    exit;
+                default:
+                    printLineWithBreak('Invalid choice');
+                    break;
+            }
+        }
+    }
+
+    function newGame()
+    {
         $playerName = readInput('Enter your name: ');
         printLinesWithBreak([
             "Hello $playerName",
@@ -103,31 +165,28 @@ class Game
         }
 
         printLineWithBreak('Your stats are valid');
-        printLineWithBreak($this->getPlayer());
-
-        // main loop
-        while (true) {
-            $choice = readIntInput('What do you want to do? (1: Find Combat, 2: Check stats, 3: Quit): ');
-            switch ($choice) {
-                case 1:
-                    printLineWithBreak('Searching for combat...');
-
-                    $fight = FightController::getInstance()->createFight($this->getPlayer(), new Rat());
-                    printLineWithBreak('A fight has started between ' . $fight->getPlayer()->getName() . ' and ' . $fight->getEntity()->getEntityName() . '!');
-                    FightController::getInstance()->startFight($fight);
-
-
-                    break;
-                case 2:
-                    printLinesWithBreak($this->getPlayer()->displayStats());
-                    break;
-                case 3:
-                    printLineWithBreak('Bye');
-                    exit;
-                default:
-                    printLineWithBreak('Invalid choice');
-                    break;
-            }
-        }
+        printLinesWithBreak($this->getPlayer()->displayStats());
     }
+
+    function save()
+    {
+        // save the Player object to a file
+        $player = $this->getPlayer();
+        
+        $playerData = serialize($player);
+        file_put_contents('player.txt', $playerData);
+
+
+    }
+
+    function loadGame()
+    {
+        // load the Player object from a file
+        $playerData = file_get_contents('player.txt');
+        $player = unserialize($playerData);
+        $this->setPlayer($player);
+        printLineWithBreak('Player loaded');
+        printLinesWithBreak($this->getPlayer()->displayStats());
+    }
+        
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace YoannLeonard\G;
+namespace YoannLeonard\G\model;
 
 class Entity
 {

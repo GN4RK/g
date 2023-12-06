@@ -1,9 +1,9 @@
 <?php
 
-namespace YoannLeonard\G\Entity;
+namespace YoannLeonard\G\model\Entity;
 
-use YoannLeonard\G\Entity;
-use YoannLeonard\G\Entity\Player;
+use YoannLeonard\G\model\Entity;
+use YoannLeonard\G\model\Entity\Player;
 
 class Fight
 {

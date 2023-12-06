@@ -1,8 +1,8 @@
 <?php
 
-namespace YoannLeonard\G\Entity;
+namespace YoannLeonard\G\model\Entity;
 
-use YoannLeonard\G\Entity;
+use YoannLeonard\G\model\Entity;
 
 class Player extends Entity
 {
