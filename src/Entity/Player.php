@@ -6,23 +6,22 @@ use YoannLeonard\G\Entity;
 
 class Player extends Entity
 {
-    private string $name;
-    private int $level;
-    private int $health;
-    private int $attack;
-    private int $defense;
-    private int $experience;
-    private int $gold;
+    private $name;
+    private $level;
+    private $health;
+    private $attack;
+    private $defense;
+    private $experience;
+    private $gold;
 
 
     public function __construct(string $name, int $health, int $attack, int $defense)
     {
-        parent::__construct();
-
-        $this->name = $name;
+        parent::__construct($health, $attack, $defense);
         $this->health = $health;
         $this->attack = $attack;
         $this->defense = $defense;
+        $this->name = $name;
         $this->level = 1;
         $this->experience = 0;
         $this->gold = 10;

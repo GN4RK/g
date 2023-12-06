@@ -2,7 +2,9 @@
 
 namespace YoannLeonard\G;
 
+use YoannLeonard\G\Controller\FightController;
 use YoannLeonard\G\Entity\Player;
+use YoannLeonard\G\Entity\Rat;
 
 // singleton class
 class Game
@@ -43,6 +45,8 @@ class Game
 
         $player = new Player($playerName, $health, $attack, $defense);
 
+        var_dump($player);
+
         if (!$this->validateStats($player)) {
             return $this->createPlayer($playerName);
         }
@@ -52,6 +56,7 @@ class Game
 
     public function validateStats(Player $player): bool
     {
+        var_dump($player->getHealth());
         $health = $player->getHealth();
         $attack = $player->getAttack();
         $defense = $player->getDefense();
@@ -82,6 +87,7 @@ class Game
 
     public function start(): void
     {
+        printLineWithBreak('Welcome to the game');
         $playerName = readInput('Enter your name: ');
         printLinesWithBreak([
             "Hello $playerName",
@@ -105,6 +111,10 @@ class Game
             switch ($choice) {
                 case 1:
                     printLineWithBreak('Searching for combat...');
+
+                    $fight = FightController::getInstance()->createFight($this->getPlayer(), new Rat());
+                    printLineWithBreak('A fight has started between ' . $fight->getPlayer()->getName() . ' and ' . $fight->getEntity()->getEntityName() . '!');
+                    FightController::getInstance()->startFight($fight);
 
 
                     break;

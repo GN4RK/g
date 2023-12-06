@@ -35,21 +35,20 @@ class Rat extends Entity
         ],
     ];
 
-    private int $health;
-    private int $attack;
-    private int $defense;
-    private int $experience;
-    private int $gold;
+    private $health;
+    private $attack;
+    private $defense;
+    private $experience;
+    private $gold;
 
 
 
     public function __construct()
     {
-        parent::__construct();
-
-        $this->health = 10;
+        parent::__construct(10, 5, 5);
         $this->attack = 5;
         $this->defense = 5;
+
         $this->experience = 5;
         $this->gold = 0;
 
