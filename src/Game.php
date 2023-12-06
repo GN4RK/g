@@ -4,6 +4,7 @@ namespace YoannLeonard\G;
 
 use Exception;
 use YoannLeonard\G\Controller\FightController;
+use YoannLeonard\G\model\Entity;
 use YoannLeonard\G\model\Entity\Player;
 use YoannLeonard\G\model\Entity\Rat;
 
@@ -121,9 +122,18 @@ class Game
                 case 2:
                     printLineWithBreak('Searching for combat...');
                     
-                    // $enemy = randomEnemy();
-                    $enemy = new Rat();
+                    $enemy = $this->randomEnemy();
+                    printLineWithBreak('You found a ' . $enemy->getEntityName() . '!');
 
+                    $choiceEncounter = $this->askChoice([
+                        '1: Fight',
+                        '2: Run away'
+                    ]);
+
+                    if ($choiceEncounter == 2) {
+                        printLineWithBreak('You ran away!');
+                        break;
+                    }
 
                     $fight = $fightController->createFight($this->getPlayer(), $enemy);
                     printLineWithBreak('A fight has started between ' . $fight->getPlayer()->getName() . ' and ' . $fight->getEntity()->getEntityName() . '!');
@@ -207,5 +217,17 @@ class Game
         $choice = readIntInput('> Your choice: ', $min, $max);
         return $choice;
     }
+
+    function randomEnemy(): Entity
+    {
+        $enemies = [
+            new Rat(),
+        ];
+
+        $randomIndex = rand(0, count($enemies) - 1);
+        return $enemies[$randomIndex];
+
+    }
+
         
 }
