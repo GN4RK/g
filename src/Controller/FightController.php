@@ -62,7 +62,7 @@ class FightController extends Controller
     {
         $damage = $attacker->getAttack() - $defender->getDefense();
         if ($damage < 0) {
-            $damage = 0;
+            $damage = 1;
         }
         $defender->setHealth($defender->getHealth() - $damage);
     }

@@ -35,39 +35,17 @@ class Rat extends Entity
         ],
     ];
 
-    private $health;
-    private $attack;
-    private $defense;
     private $experience;
     private $gold;
-
-
 
     public function __construct()
     {
         parent::__construct(10, 5, 5);
-        $this->attack = 5;
-        $this->defense = 5;
 
         $this->experience = 5;
         $this->gold = 0;
 
 
-    }
-
-    public function getHealth(): int
-    {
-        return $this->health;
-    }
-
-    public function getAttack(): int
-    {
-        return $this->attack;
-    }
-
-    public function getDefense(): int
-    {
-        return $this->defense;
     }
 
     public function getExperience(): int
@@ -78,21 +56,6 @@ class Rat extends Entity
     public function getGold(): int
     {
         return $this->gold;
-    }
-
-    public function setHealth(int $health): void
-    {
-        $this->health = $health;
-    }
-
-    public function setAttack(int $attack): void
-    {
-        $this->attack = $attack;
-    }
-
-    public function setDefense(int $defense): void
-    {
-        $this->defense = $defense;
     }
 
     public function setExperience(int $experience): void
@@ -109,9 +72,9 @@ class Rat extends Entity
     {
         return [
             "Entity    : ".parent::getEntityName(),
-            "Health    : $this->health",
-            "Attack    : $this->attack",
-            "Defense   : $this->defense",
+            "Health    : ".parent::getHealth(),
+            "Attack    : ".parent::getAttack(),
+            "Defense   : ".parent::getDefense(),
             "Experience: $this->experience",
             "Gold      : $this->gold"
         ];

@@ -8,9 +8,6 @@ class Player extends Entity
 {
     private $name;
     private $level;
-    private $health;
-    private $attack;
-    private $defense;
     private $experience;
     private $gold;
 
@@ -18,9 +15,6 @@ class Player extends Entity
     public function __construct(string $name, int $health, int $attack, int $defense)
     {
         parent::__construct($health, $attack, $defense);
-        $this->health = $health;
-        $this->attack = $attack;
-        $this->defense = $defense;
         $this->name = $name;
         $this->level = 1;
         $this->experience = 0;
@@ -36,21 +30,6 @@ class Player extends Entity
     public function getLevel(): int
     {
         return $this->level;
-    }
-
-    public function getHealth(): int
-    {
-        return $this->health;
-    }
-
-    public function getAttack(): int
-    {
-        return $this->attack;
-    }
-
-    public function getDefense(): int
-    {
-        return $this->defense;
     }
 
     public function getExperience(): int
@@ -73,21 +52,6 @@ class Player extends Entity
         $this->level = $level;
     }
 
-    public function setHealth(int $health): void
-    {
-        $this->health = $health;
-    }
-
-    public function setAttack(int $attack): void
-    {
-        $this->attack = $attack;
-    }
-
-    public function setDefense(int $defense): void
-    {
-        $this->defense = $defense;
-    }
-
     public function setExperience(int $experience): void
     {
         $this->experience = $experience;
@@ -101,14 +65,15 @@ class Player extends Entity
     public function levelUp(): void
     {
         $this->level++;
-        $this->health += 10;
-        $this->attack += 5;
-        $this->defense += 5;
+        parent::setHealth(parent::getHealth() + 10);
+        parent::setAttack(parent::getAttack() + 5);
+        parent::setDefense(parent::getDefense() + 5);
     }
 
     public function __toString(): string
     {
-        return "Player: $this->name, Level: $this->level, Health: $this->health, Attack: $this->attack, Defense: $this->defense";
+        return "Player: $this->name, Level: $this->level, Health: ".parent::getHealth().", 
+        Attack: ".parent::getAttack().", Defense: ".parent::getDefense().", Experience: $this->experience, Gold: $this->gold";
     }
 
     public function displayStats(): array
@@ -116,9 +81,9 @@ class Player extends Entity
         return [
             "Player    : $this->name",
             "Level     : $this->level",
-            "Health    : $this->health",
-            "Attack    : $this->attack",
-            "Defense   : $this->defense",
+            "Health    : ".parent::getHealth(),
+            "Attack    : ".parent::getAttack(),
+            "Defense   : ".parent::getDefense(),
             "Experience: $this->experience",
             "Gold      : $this->gold"
         ];

@@ -50,5 +50,15 @@ class Entity
         $this->health = $health;
     }
 
+    public function setAttack(int $attack): void
+    {
+        $this->attack = $attack;
+    }
+
+    public function setDefense(int $defense): void
+    {
+        $this->defense = $defense;
+    }
+
 
 }
