@@ -42,14 +42,32 @@ class FightController extends Controller
             printLine($player->getName() . ' has ' . $player->getHealth() . ' health left.');
             printLine($entity->getEntityName() . ' has ' . $entity->getHealth() . ' health left.');
 
-            $choice = Game::getInstance()->askChoice([
-                '1. Attack',
-                '2. Run away'
+            // Enemy chooses a random action
+            $enemyChoice = $entity->chooseAction();
+
+            // display enemy action
+            printLine($entity->getEntityName() . ' chose ' . $enemyChoice);
+            
+
+
+            $playerChoice = Game::getInstance()->askChoice([
+                '1: Attack for ' . $player->getAttack() . ' damage',
+                '2: Defend for ' . ($player->getDefense() * 2) . ' damage',
+                '3: Run away'
             ]);
 
-            if ($choice == 2) {
+            if ($playerChoice == 2) {
+                if ($enemyChoice == 'attack') {
+                    $this->defense($entity, $player);
+                }
+                $fight->incrementTurn();
+                readline('Press enter to continue...');
+                continue;
+            }
+
+            if ($playerChoice == 3) {
                 printLine('You ran away!');
-                return;
+                continue;
             }
 
             $this->attack($player, $entity);
@@ -74,5 +92,19 @@ class FightController extends Controller
         }
         $defender->setHealth($defender->getHealth() - $damage);
         printLine($attacker->getEntityName() . ' attacked ' . $defender->getEntityName() . ' for ' . $damage . ' damage.');
+    }
+
+    public function defense(Entity $attacker, Entity $defender): void
+    {
+        $damage = $attacker->getAttack() - ($defender->getDefense() * 2);
+        if ($damage < 0) {
+            $damage = 0;
+        }
+        $defender->setHealth($defender->getHealth() - $damage);
+        if ($damage == 0) {
+            printLine($defender->getEntityName() . ' attacked ' . $attacker->getEntityName() . ' but it had no effect.');
+        } else {
+            printLine($defender->getEntityName() . ' attacked ' . $attacker->getEntityName() . ' for ' . $damage . ' damage.');
+        }
     }
 }
