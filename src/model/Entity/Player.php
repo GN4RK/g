@@ -3,6 +3,9 @@
 namespace YoannLeonard\G\model\Entity;
 
 use YoannLeonard\G\model\Entity;
+use YoannLeonard\G\model\Move\Attack;
+use YoannLeonard\G\model\Move\Defense;
+use YoannLeonard\G\model\Move\Flee;
 
 class Player extends Entity
 {
@@ -19,6 +22,10 @@ class Player extends Entity
         $this->level = 1;
         $this->experience = 0;
         $this->gold = 10;
+
+        $this->moveset->addMove(new Attack($this));
+        $this->moveset->addMove(new Defense($this));
+        $this->moveset->addMove(new Flee($this));
 
     }
 
@@ -81,7 +88,7 @@ class Player extends Entity
         return [
             "Player    : $this->name",
             "Level     : $this->level",
-            "Health    : ".parent::getHealth(),
+            "Health    : ".parent::getHealth() . "/" . parent::getmaxHealth(),
             "Attack    : ".parent::getAttack(),
             "Defense   : ".parent::getDefense(),
             "Experience: $this->experience",

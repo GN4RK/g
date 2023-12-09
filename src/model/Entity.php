@@ -2,23 +2,25 @@
 
 namespace YoannLeonard\G\model;
 
+use YoannLeonard\G\model\Move\Attack;
+
 class Entity
 {
     private $entityName;
     private $state;
     private $status;
+    private $maxHealth;
     private $health;
+    private $baseAttack;
     private $attack;
+    private $baseDefense;
     private $defense;
+    private Move $move;
 
-    public const MOVESET = [
-        'attack' => 0.5,
-        'defense' => 0.4,
-        'flee' => 0.1
-    ];
+    public $moveset;
 
     public const STATE = [
-        'ready' => 1,
+        'neutral' => 1,
         'attacking' => 2,
         'defending' => 3,
         'fleeing' => 4
@@ -36,17 +38,22 @@ class Entity
         'dead' => 9
     ];
 
-    public function __construct(int $health, int $attack, int $defense)
+    public function __construct(int $maxHealth, int $baseAttack, int $baseDefense)
     {
         $this->status = 'normal';
-        $this->state = 'ready';
-        $this->health = $health;
-        $this->attack = $attack;
-        $this->defense = $defense;
+        $this->state = 'neutral';
+        $this->maxHealth = $maxHealth;
+        $this->health = $maxHealth;
+        $this->baseAttack = $baseAttack;
+        $this->attack = $baseAttack;
+        $this->baseDefense = $baseDefense;
+        $this->defense = $baseDefense;
 
         $entityClassPath = get_class($this);
         $nameParts = explode('\\', $entityClassPath);
         $this->entityName = end($nameParts);
+
+        $this->moveset = new Moveset();
     }
 
     public function getEntityName(): string
@@ -64,9 +71,19 @@ class Entity
         return $this->health;
     }
 
+    public function getmaxHealth(): int
+    {
+        return $this->maxHealth;
+    }
+
     public function getAttack(): int
     {
         return $this->attack;
+    }
+
+    public function getBaseAttack(): int
+    {
+        return $this->baseAttack;
     }
 
     public function getDefense(): int
@@ -74,9 +91,19 @@ class Entity
         return $this->defense;
     }
 
+    public function getBaseDefense(): int
+    {
+        return $this->baseDefense;
+    }
+
     public function setHealth(int $health): void
     {
         $this->health = $health;
+    }
+
+    public function setmaxHealth(int $maxHealth): void
+    {
+        $this->maxHealth = $maxHealth;
     }
 
     public function setAttack(int $attack): void
@@ -84,9 +111,19 @@ class Entity
         $this->attack = $attack;
     }
 
+    public function setBaseAttack(int $baseAttack): void
+    {
+        $this->baseAttack = $baseAttack;
+    }
+
     public function setDefense(int $defense): void
     {
         $this->defense = $defense;
+    }
+
+    public function setBaseDefense(int $baseDefense): void
+    {
+        $this->baseDefense = $baseDefense;
     }
 
     public function setStatus(string $status): void
@@ -102,19 +139,72 @@ class Entity
         return $this->status;
     }
 
-    public function chooseAction(): string
+    public function getState(): string
+    {
+        if ($this->state === null) {
+            return 'ready';
+        }
+        return $this->state;
+    }
+
+    public function setState(string $state): void
+    {
+        $this->state = $state;
+    }
+
+    public function setMove(Move $move): void
+    {
+        $this->move = $move;
+    }
+
+    public function getMove(): Move
+    {
+        if ($this->move === null) {
+            return new Attack($this);
+        }
+        return $this->move;
+    }
+
+    public function chooseRandomAction(): void
     {
         $randomNumber = mt_rand() / mt_getrandmax();
 
         $cumulativeProbability = 0;
-        foreach ($this::MOVESET as $move => $probability) {
-            $cumulativeProbability += $probability;
+        foreach ($this->getMoveset()->getMoves() as $move) {
+            $cumulativeProbability += $move['probability'];
             if ($randomNumber <= $cumulativeProbability) {
-                return $move;
+                $this->setMove($move['move']);
+                return;
             }
         }
 
-        return array_key_first($this::MOVESET);
+        $this->setMove($this->getMoveset()->getMoves()[0]['move']);
+    }
+
+    public function chooseActionFromString(string $move): bool
+    {
+        // check if the move is in the moveset
+        foreach ($this->getMoveset()->getMoves() as $moveInMoveset) {
+            if ($moveInMoveset['move']->getName() === $move) {
+                $this->setMove($moveInMoveset['move']);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function updateState(): void
+    {
+        if ($this->state === 'ready') {
+            $this->state = 'waiting';
+        } else {
+            $this->state = 'ready';
+        }
+    }
+
+    public function getMoveset(): Moveset
+    {
+        return $this->moveset;
     }
 
 

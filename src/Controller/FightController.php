@@ -7,6 +7,9 @@ use YoannLeonard\G\model\Entity\Player;
 use YoannLeonard\G\model\Entity;
 use YoannLeonard\G\model\Entity\Fight;
 use YoannLeonard\G\Game;
+use YoannLeonard\G\model\Move\Attack;
+use YoannLeonard\G\model\Move\Defense;
+use YoannLeonard\G\model\Move\Flee;
 
 use function YoannLeonard\G\printLine;
 
@@ -43,38 +46,33 @@ class FightController extends Controller
             printLine($entity->getEntityName() . ' has ' . $entity->getHealth() . ' health left.');
 
             // Enemy chooses a random action
-            $enemyChoice = $entity->chooseAction();
+            $enemyChoice = $entity->chooseRandomAction();
 
             // display enemy action
             printLine($entity->getEntityName() . ' chose ' . $enemyChoice);
-            
 
-
+            // Player chooses an action
             $playerChoice = Game::getInstance()->askChoice([
                 '1: Attack for ' . $player->getAttack() . ' damage',
                 '2: Defend for ' . ($player->getDefense() * 2) . ' damage',
                 '3: Run away'
             ]);
 
-            if ($playerChoice == 2) {
-                if ($enemyChoice == 'attack') {
-                    $this->defense($entity, $player);
-                }
-                $fight->incrementTurn();
-                readline('Press enter to continue...');
-                continue;
+            if ($playerChoice == 1) {
+                $player->setMove(new Attack($player));
+            } elseif ($playerChoice == 2) {
+                $player->setMove(new Defense($player));
+            } elseif ($playerChoice == 3) {
+                $player->setMove(new Flee($player));
             }
 
-            if ($playerChoice == 3) {
-                printLine('You ran away!');
-                continue;
-            }
+            // display player action
+            printLine($player->getName() . ' chose ' . $player->getMove()->getName());
 
-            $this->attack($player, $entity);
-            $this->attack($entity, $player);
+            // get bonus from moves
+            $playerBonus = $player->getMove()->getBonus();
 
-            $fight->incrementTurn();
-            readline('Press enter to continue...');
+            
         }
 
         if ($player->isAlive()) {
