@@ -55,10 +55,10 @@ class FightController extends Controller
             while ($playerChoice == 4) {
                 // Player chooses an action
                 $playerChoice = Game::getInstance()->askChoice([
-                    '1: Attack for ' . $player->getAttack() . ' damage',
-                    '2: Defend for ' . ($player->getDefense() * 2) . ' damage',
-                    '3: Run away',
-                    '4: View stats'
+                    'Attack for ' . $player->getAttack() . ' damage',
+                    'Defend for ' . ($player->getDefense() * 2) . ' damage',
+                    'Run away',
+                    'View stats'
                 ]);
 
                 if ($playerChoice == 1) {
@@ -78,6 +78,10 @@ class FightController extends Controller
             // get bonus from moves
             $entity->getMove()->getBonus();
             $player->getMove()->getBonus();
+
+            // update state
+            $entity->updateState();
+            $player->updateState();
 
             // apply moves
             $this->applyMoves($fight);
