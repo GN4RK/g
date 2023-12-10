@@ -7,7 +7,7 @@ use YoannLeonard\G\Game;
 
 function readInput(string $prompt = ''): string
 {
-    echo $prompt;
+    printLine($prompt);
     return readline();
 }
 
@@ -25,9 +25,17 @@ function readIntInput(string $prompt = '', int $min = 0, int $max = 100): int
     return (int)$input;
 }
 
+function printText(string $string = ''): void
+{
+    foreach (str_split($string) as $char) {
+        echo $char;
+    }
+}
+
 function printLine(string $line = ''): void
 {
-    echo $line . PHP_EOL;
+    printText($line . PHP_EOL);
+    usleep(10000);
 }
 
 function printLines(array $lines = []): void
