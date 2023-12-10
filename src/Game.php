@@ -142,7 +142,7 @@ class Game
 
                     break;
                 case 3:
-                    printLinesWithBreak($this->getPlayer()->displayStats());
+                    printLinesWithBreak($this->getPlayer()->getStats());
                     break;
                 case 4:
                     $this->save();                    
@@ -174,7 +174,7 @@ class Game
         }
 
         printLineWithBreak('Your stats are valid');
-        printLinesWithBreak($this->getPlayer()->displayStats());
+        printLinesWithBreak($this->getPlayer()->getStats());
     }
 
     function save()
@@ -191,7 +191,7 @@ class Game
         $player = unserialize($playerData);
         $this->setPlayer($player);
         printLineWithBreak('Player loaded');
-        printLinesWithBreak($this->getPlayer()->displayStats());
+        printLinesWithBreak($this->getPlayer()->getStats());
     }
 
     function askChoice(array $choices, int $min = 1, int $max = 100): int
