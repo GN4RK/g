@@ -18,7 +18,7 @@ class Attack extends Move
     {
         parent::apply($attackedEntity);
         $damage = parent::getEntity()->getAttack() - $attackedEntity->getDefense();
-        if ($damage < 0) {
+        if ($damage <= 0) {
             $damage = 1;
             if ($attackedEntity->isDefending()) {
                 printLine($attackedEntity->getName() . ' is defending.');
