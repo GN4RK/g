@@ -74,7 +74,7 @@ class Rat extends Entity
         $this->gold = $gold;
     }
 
-    public function displayStats(): array
+    public function getStats(): array
     {
         return [
             "Entity    : ".parent::getEntityName(),
