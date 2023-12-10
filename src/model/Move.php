@@ -45,4 +45,9 @@ abstract class Move
         return $this->entity;
     }
 
+    public function apply(Entity $entity): void
+    {
+        $this->entity->setState($this->state);
+    }
+
 }
