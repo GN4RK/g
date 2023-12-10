@@ -7,7 +7,7 @@ use YoannLeonard\G\Game;
 
 function readInput(string $prompt = ''): string
 {
-    printLine($prompt);
+    printText($prompt);
     return readline();
 }
 
