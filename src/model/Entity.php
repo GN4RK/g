@@ -4,9 +4,13 @@ namespace YoannLeonard\G\model;
 
 use YoannLeonard\G\model\Move\Attack;
 
+use function YoannLeonard\G\printLine;
+use function YoannLeonard\G\printLinesWithBreak;
+
 class Entity
 {
     private $entityName;
+    private $name;
     private $state;
     private $status;
     private $maxHealth;
@@ -52,6 +56,7 @@ class Entity
         $entityClassPath = get_class($this);
         $nameParts = explode('\\', $entityClassPath);
         $this->entityName = end($nameParts);
+        $this->name = $this->entityName;
 
         $this->moveset = new Moveset();
     }
@@ -205,6 +210,45 @@ class Entity
     public function getMoveset(): Moveset
     {
         return $this->moveset;
+    }
+
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    public function getName(): string
+    {
+
+        return $this->name;
+    }
+
+    public function displayStats(): void
+    {
+        printLinesWithBreak($this->getStats());
+    }
+
+    public function getStats(): array
+    {
+        return [
+            "Name      : " . $this->getName(),
+            "Health    : " . $this->getHealth() . '/' . $this->getmaxHealth(),
+            "Attack    : " . $this->getAttack(),
+            "Defense   : " . $this->getDefense(),
+            "Status    : " . $this->getStatus(),
+            "State     : " . $this->getState()
+        ];
+    }
+
+    public function cancelBonus(): void
+    {
+        $this->setAttack($this->getBaseAttack());
+        $this->setDefense($this->getBaseDefense());
+    }
+
+    public function isDefending(): bool
+    {
+        return $this->getState() === 'defending';
     }
 
 
