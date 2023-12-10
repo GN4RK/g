@@ -9,7 +9,6 @@ use YoannLeonard\G\model\Move\Flee;
 
 class Player extends Entity
 {
-    private $name;
     private $level;
     private $experience;
     private $gold;
@@ -18,7 +17,7 @@ class Player extends Entity
     public function __construct(string $name, int $health, int $attack, int $defense)
     {
         parent::__construct($health, $attack, $defense);
-        $this->name = $name;
+        $this->setName($name);
         $this->level = 1;
         $this->experience = 0;
         $this->gold = 10;
@@ -27,11 +26,6 @@ class Player extends Entity
         $this->moveset->addMove(new Defense($this));
         $this->moveset->addMove(new Flee($this));
 
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
     }
 
     public function getLevel(): int
@@ -47,11 +41,6 @@ class Player extends Entity
     public function getGold(): int
     {
         return $this->gold;
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
     }
 
     public function setLevel(int $level): void
@@ -79,18 +68,18 @@ class Player extends Entity
 
     public function __toString(): string
     {
-        return "Player: $this->name, Level: $this->level, Health: ".parent::getHealth().", 
+        return "Player: ". $this->getName() .", Level: $this->level, Health: ".parent::getHealth().", 
         Attack: ".parent::getAttack().", Defense: ".parent::getDefense().", Experience: $this->experience, Gold: $this->gold";
     }
 
-    public function displayStats(): array
+    public function getStats(): array
     {
         return [
-            "Player    : $this->name",
+            "Player    : ". $this->getName(),
             "Level     : $this->level",
             "Health    : ".parent::getHealth() . "/" . parent::getmaxHealth(),
             "Attack    : ".parent::getAttack(),
-            "Defense   : ".parent::getDefense(),
+            "Defense   : ".parent::getBaseDefense() . "+" . parent::getDefense() - parent::getBaseDefense(),
             "Experience: $this->experience",
             "Gold      : $this->gold"
         ];
