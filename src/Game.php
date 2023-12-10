@@ -89,14 +89,16 @@ class Game
         printLineWithBreak('Welcome to the game');
 
         $choice = $this->askChoice([
-            '1: Start a new game',
-            '2: Load a game'
+            'Start a new game',
+            'Load a game'
         ]);
 
         if ($choice == 1) {
             $this->newGame();
         } else {
-            $this->loadGame();
+            if (!$this->loadGame()) {
+                $this->newGame();
+            }
         }
 
         $this->mainLoop();
@@ -109,10 +111,10 @@ class Game
         while ($this->getPlayer()->isAlive()) {
 
             $choice = $this->askChoice([
-                '1: Shopping',
-                '2: Find Combat',
-                '3: Check stats',
-                '4: Save and quit'
+                'Shopping',
+                'Find Combat',
+                'Check stats',
+                'Save and quit'
             ]);
 
             switch ($choice) {
@@ -126,8 +128,8 @@ class Game
                     printLineWithBreak('You found a ' . $enemy->getEntityName() . '!');
 
                     $choiceEncounter = $this->askChoice([
-                        '1: Fight',
-                        '2: Run away'
+                        'Fight',
+                        'Run away'
                     ]);
 
                     if ($choiceEncounter == 2) {
@@ -181,20 +183,47 @@ class Game
     {
         $player = $this->getPlayer();
         $playerData = serialize($player);
-        file_put_contents('player.txt', $playerData);
+        $fileName = readInput('Enter a name for your save: ');
+        // check if folder exists
+        if (!file_exists('saves')) {
+            mkdir('saves');
+        }
+        file_put_contents('saves/' . $fileName . '.sav', $playerData);
         printLineWithBreak('Player saved');
     }
 
     function loadGame()
     {
-        $playerData = file_get_contents('player.txt');
+        // check if folder exists
+        if (!file_exists('saves')) {
+            mkdir('saves');
+        }
+        $saves = scandir('saves');
+        if (count($saves) == 2) {
+            printLineWithBreak('No save found');
+            return false;
+        }
+
+        $choices = [];
+        foreach ($saves as $save) {
+            if ($save == '.' || $save == '..') {
+                continue;
+            }
+            $choices[] = $save;
+        }
+
+        $choice = $this->askChoice($choices, 1, count($choices), 'Choose a save:');
+        $fileName = $choices[$choice - 1];
+
+        $playerData = file_get_contents('saves/' . $fileName);
         $player = unserialize($playerData);
         $this->setPlayer($player);
         printLineWithBreak('Player loaded');
         printLinesWithBreak($this->getPlayer()->getStats());
+        return true;
     }
 
-    function askChoice(array $choices, int $min = 1, int $max = 100): int
+    function askChoice(array $choices, int $min = 1, int $max = 100, string $prompt = 'What do you want to do?'): int
     {
         if ($max == 100) {
             $max = count($choices);
@@ -212,7 +241,12 @@ class Game
             throw new Exception('Min can\'t be greater than max');
         }
 
-        printLines(array_merge(['What do you want to do?'], $choices));
+        // add number to choices
+        for ($i = 0; $i < count($choices); $i++) {
+            $choices[$i] = ($i + 1) . ': ' . $choices[$i];
+        }
+
+        printLines(array_merge([$prompt], $choices));
 
         $choice = readIntInput('> Your choice: ', $min, $max);
         return $choice;
