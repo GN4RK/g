@@ -4,7 +4,7 @@ namespace YoannLeonard\G\model\Entity;
 
 use YoannLeonard\G\model\Entity;
 use YoannLeonard\G\model\Move\Attack;
-use YoannLeonard\G\model\Move\Defense;
+use YoannLeonard\G\model\Move\Defend;
 use YoannLeonard\G\model\Move\Flee;
 
 class Rat extends Entity
@@ -49,7 +49,7 @@ class Rat extends Entity
         $this->gold = 0;
 
         $this->moveset->addMove(new Attack($this), 0.5);
-        $this->moveset->addMove(new Defense($this), 0.4);
+        $this->moveset->addMove(new Defend($this), 0.4);
         $this->moveset->addMove(new Flee($this), 0.1);
 
     }

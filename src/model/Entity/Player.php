@@ -4,7 +4,7 @@ namespace YoannLeonard\G\model\Entity;
 
 use YoannLeonard\G\model\Entity;
 use YoannLeonard\G\model\Move\Attack;
-use YoannLeonard\G\model\Move\Defense;
+use YoannLeonard\G\model\Move\Defend;
 use YoannLeonard\G\model\Move\Flee;
 
 class Player extends Entity
@@ -23,7 +23,7 @@ class Player extends Entity
         $this->gold = 10;
 
         $this->moveset->addMove(new Attack($this));
-        $this->moveset->addMove(new Defense($this));
+        $this->moveset->addMove(new Defend($this));
         $this->moveset->addMove(new Flee($this));
 
     }

@@ -7,11 +7,11 @@ use YoannLeonard\G\model\Move;
 
 use function YoannLeonard\G\printLine;
 
-class Defense extends Move
+class Defend extends Move
 {
     public function __construct(Entity $entity)
     {
-        parent::__construct("defense", "defending", $entity);
+        parent::__construct("defend", "defending", $entity);
     }
 
     public function getBonus(): bool

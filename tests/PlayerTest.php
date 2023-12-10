@@ -1,7 +1,7 @@
 <?php
 use PHPUnit\Framework\TestCase;
 use YoannLeonard\G\model\Entity\Player;
-use YoannLeonard\G\model\Move\Defense;
+use YoannLeonard\G\model\Move\Defend;
 
 final class PlayerTest extends TestCase
 {
@@ -66,14 +66,14 @@ final class PlayerTest extends TestCase
     public function testMoves()
     {
         $player = new Player("PlayerTest", 100, 100, 100);
-        $player->setMove(new Defense($player));
-        $this->assertEquals("defense", $player->getMove()->getName());
+        $player->setMove(new Defend($player));
+        $this->assertEquals("defend", $player->getMove()->getName());
         $player->chooseActionFromString("attack");
         $this->assertEquals("attack", $player->getMove()->getName());
         $player->chooseActionFromString("flee");
         $this->assertEquals("flee", $player->getMove()->getName());
-        $player->chooseActionFromString("defense");
-        $this->assertEquals("defense", $player->getMove()->getName());
+        $player->chooseActionFromString("defend");
+        $this->assertEquals("defend", $player->getMove()->getName());
 
     }
 }
