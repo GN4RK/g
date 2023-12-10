@@ -78,7 +78,7 @@ class Player extends Entity
             "Player    : ". $this->getName(),
             "Level     : $this->level",
             "Health    : ".parent::getHealth() . "/" . parent::getmaxHealth(),
-            "Attack    : ".parent::getAttack(),
+            "Attack    : ".parent::getAttack() . "+" . parent::getAttack() - parent::getBaseAttack(),
             "Defense   : ".parent::getBaseDefense() . "+" . parent::getDefense() - parent::getBaseDefense(),
             "Experience: $this->experience",
             "Gold      : $this->gold"
