@@ -14,18 +14,18 @@ class Attack extends Move
         parent::__construct("attack", "attacking", $entity);
     }
 
-    public function apply(Entity $entity): void
+    public function apply(Entity $attackedEntity): void
     {
-        parent::apply($entity);
-        $damage = parent::getEntity()->getAttack() - $entity->getDefense();
+        parent::apply($attackedEntity);
+        $damage = parent::getEntity()->getAttack() - $attackedEntity->getDefense();
         if ($damage < 0) {
             $damage = 1;
-            if ($entity->isDefending()) {
-                printLine($entity->getName() . ' is defending.');
+            if ($attackedEntity->isDefending()) {
+                printLine($attackedEntity->getName() . ' is defending.');
                 $damage = 0;
             }
         }
-        $entity->setHealth($entity->getHealth() - $damage);
-        printLine(parent::getEntity()->getName() . ' attacks ' . $entity->getName() . ' for ' . $damage . ' damage.');
+        $attackedEntity->setHealth($attackedEntity->getHealth() - $damage);
+        printLine(parent::getEntity()->getName() . ' attacks ' . $attackedEntity->getName() . ' for ' . $damage . ' damage.');
     }
 }
