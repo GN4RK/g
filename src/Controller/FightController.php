@@ -7,11 +7,9 @@ use YoannLeonard\G\model\Entity\Player;
 use YoannLeonard\G\model\Entity;
 use YoannLeonard\G\model\Entity\Fight;
 use YoannLeonard\G\Game;
-use YoannLeonard\G\model\Move\Attack;
-use YoannLeonard\G\model\Move\Defense;
-use YoannLeonard\G\model\Move\Flee;
 
 use function YoannLeonard\G\printLine;
+use function YoannLeonard\G\printLineWithBreak;
 
 class FightController extends Controller
 {
@@ -46,31 +44,51 @@ class FightController extends Controller
             printLine($entity->getEntityName() . ' has ' . $entity->getHealth() . ' health left.');
 
             // Enemy chooses a random action
-            $enemyChoice = $entity->chooseRandomAction();
+            $entity->chooseRandomAction();
+            $enemyChoice = $entity->getMove()->getName();
 
             // display enemy action
-            printLine($entity->getEntityName() . ' chose ' . $enemyChoice);
+            printLine($entity->getEntityName() . ' chose to ' . $enemyChoice);
 
-            // Player chooses an action
-            $playerChoice = Game::getInstance()->askChoice([
-                '1: Attack for ' . $player->getAttack() . ' damage',
-                '2: Defend for ' . ($player->getDefense() * 2) . ' damage',
-                '3: Run away'
-            ]);
+            $playerChoice = 4;
 
-            if ($playerChoice == 1) {
-                $player->setMove(new Attack($player));
-            } elseif ($playerChoice == 2) {
-                $player->setMove(new Defense($player));
-            } elseif ($playerChoice == 3) {
-                $player->setMove(new Flee($player));
+            while ($playerChoice == 4) {
+                // Player chooses an action
+                $playerChoice = Game::getInstance()->askChoice([
+                    '1: Attack for ' . $player->getAttack() . ' damage',
+                    '2: Defend for ' . ($player->getDefense() * 2) . ' damage',
+                    '3: Run away',
+                    '4: View stats'
+                ]);
+
+                if ($playerChoice == 1) {
+                    $player->chooseActionFromString('attack');
+                } elseif ($playerChoice == 2) {
+                    $player->chooseActionFromString('defend');
+                } elseif ($playerChoice == 3) {
+                    $player->chooseActionFromString('flee');
+                } elseif ($playerChoice == 4) {
+                    $player->displayStats();
+                }
             }
 
             // display player action
-            printLine($player->getName() . ' chose ' . $player->getMove()->getName());
+            printLine($player->getName() . ' chose to ' . $player->getMove()->getName());
 
             // get bonus from moves
-            $playerBonus = $player->getMove()->getBonus();
+            $entity->getMove()->getBonus();
+            $player->getMove()->getBonus();
+
+            // apply moves
+            $this->applyMoves($fight);
+            
+            // cancel bonus from moves
+            $entity->cancelBonus();
+            $player->cancelBonus();
+
+            // end of turn
+            $fight->incrementTurn();
+            printLineWithBreak();
 
             
         }
@@ -82,27 +100,19 @@ class FightController extends Controller
         }
     }
 
-    public function attack(Entity $attacker, Entity $defender): void
+    public function applyMoves(Fight $fight): void
     {
-        $damage = $attacker->getAttack() - $defender->getDefense();
-        if ($damage < 0) {
-            $damage = 1;
-        }
-        $defender->setHealth($defender->getHealth() - $damage);
-        printLine($attacker->getEntityName() . ' attacked ' . $defender->getEntityName() . ' for ' . $damage . ' damage.');
-    }
+        $player = $fight->getPlayer();
+        $entity = $fight->getEntity();
 
-    public function defense(Entity $attacker, Entity $defender): void
-    {
-        $damage = $attacker->getAttack() - ($defender->getDefense() * 2);
-        if ($damage < 0) {
-            $damage = 0;
+        $first = $player;
+        $second = $entity;
+        if ($entity->getMove()->getName() == 'defend') {
+            $first = $entity;
+            $second = $player;
         }
-        $defender->setHealth($defender->getHealth() - $damage);
-        if ($damage == 0) {
-            printLine($defender->getEntityName() . ' attacked ' . $attacker->getEntityName() . ' but it had no effect.');
-        } else {
-            printLine($defender->getEntityName() . ' attacked ' . $attacker->getEntityName() . ' for ' . $damage . ' damage.');
-        }
+
+        $first->getMove()->apply($second);
+        $second->getMove()->apply($first);
     }
 }
