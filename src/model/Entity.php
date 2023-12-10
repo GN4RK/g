@@ -200,11 +200,7 @@ class Entity
 
     public function updateState(): void
     {
-        if ($this->state === 'ready') {
-            $this->state = 'waiting';
-        } else {
-            $this->state = 'ready';
-        }
+        $this->setState($this->getMove()->getState());
     }
 
     public function getMoveset(): Moveset
