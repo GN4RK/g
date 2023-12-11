@@ -117,6 +117,10 @@ class FightController extends Controller
         }
 
         $first->getMove()->apply($second);
+        // check if the entity is still alive
+        if (!$second->isAlive()) {
+            return;
+        }
         $second->getMove()->apply($first);
     }
 }
