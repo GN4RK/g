@@ -123,4 +123,9 @@ class FightController extends Controller
         }
         $second->getMove()->apply($first);
     }
+
+    public function getFights(): array
+    {
+        return $this->fights;
+    }
 }
