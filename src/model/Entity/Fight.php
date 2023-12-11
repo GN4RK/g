@@ -44,4 +44,9 @@ class Fight
     {
         $this->turn++;
     }
+
+    public function __toString(): string
+    {
+        return 'Fight ' . $this->id . ' : ' . $this->player->getName() . ' vs ' . $this->entity->getEntityName();
+    }
 }
