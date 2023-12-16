@@ -3,10 +3,12 @@
 namespace YoannLeonard\G;
 
 use Exception;
+use YoannLeonard\G\Controller\EntityController;
 use YoannLeonard\G\Controller\FightController;
-use YoannLeonard\G\model\Entity;
-use YoannLeonard\G\model\Entity\Player;
-use YoannLeonard\G\model\Entity\Rat;
+use YoannLeonard\G\Model\Entity;
+use YoannLeonard\G\Model\Entity\Player;
+use YoannLeonard\G\Model\Entity\Pusheen;
+use YoannLeonard\G\Model\Entity\Rat;
 
 // singleton class
 class Game
@@ -107,6 +109,7 @@ class Game
     function mainLoop()
     {
         $fightController = FightController::getInstance();
+        $entityController = EntityController::getInstance();
         
         while ($this->getPlayer()->isAlive()) {
 
@@ -126,6 +129,7 @@ class Game
                     
                     $enemy = $this->randomEnemy();
                     printLineWithBreak('You found a ' . $enemy->getEntityName() . '!');
+                    printLine($entityController->renderEntity($enemy));
 
                     $choiceEncounter = $this->askChoice([
                         'Fight',
@@ -256,6 +260,7 @@ class Game
     {
         $enemies = [
             new Rat(),
+            new Pusheen()
         ];
 
         $randomIndex = rand(0, count($enemies) - 1);
