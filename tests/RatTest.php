@@ -1,6 +1,6 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use YoannLeonard\G\model\Entity\Rat;
+use YoannLeonard\G\Model\Entity\Rat;
 
 final class RatTest extends TestCase
 {

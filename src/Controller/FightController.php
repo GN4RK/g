@@ -3,9 +3,9 @@
 namespace YoannLeonard\G\Controller;
 
 use YoannLeonard\G\Controller\Controller;
-use YoannLeonard\G\model\Entity\Player;
-use YoannLeonard\G\model\Entity;
-use YoannLeonard\G\model\Entity\Fight;
+use YoannLeonard\G\Model\Entity\Player;
+use YoannLeonard\G\Model\Entity;
+use YoannLeonard\G\Model\Entity\Fight;
 use YoannLeonard\G\Game;
 
 use function YoannLeonard\G\printLine;

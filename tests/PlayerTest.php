@@ -1,7 +1,7 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use YoannLeonard\G\model\Entity\Player;
-use YoannLeonard\G\model\Move\Defend;
+use YoannLeonard\G\Model\Entity\Player;
+use YoannLeonard\G\Model\Move\Defend;
 
 final class PlayerTest extends TestCase
 {

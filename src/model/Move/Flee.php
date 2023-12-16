@@ -1,9 +1,9 @@
 <?php
 
-namespace YoannLeonard\G\model\Move;
+namespace YoannLeonard\G\Model\Move;
 
-use YoannLeonard\G\model\Entity;
-use YoannLeonard\G\model\Move;
+use YoannLeonard\G\Model\Entity;
+use YoannLeonard\G\Model\Move;
 
 class Flee extends Move
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace YoannLeonard\G\model;
+namespace YoannLeonard\G\Model;
 
 abstract class Move 
 {

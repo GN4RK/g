@@ -1,11 +1,11 @@
 <?php
 
-namespace YoannLeonard\G\model\Entity;
+namespace YoannLeonard\G\Model\Entity;
 
-use YoannLeonard\G\model\Entity;
-use YoannLeonard\G\model\Move\Attack;
-use YoannLeonard\G\model\Move\Defend;
-use YoannLeonard\G\model\Move\Flee;
+use YoannLeonard\G\Model\Entity;
+use YoannLeonard\G\Model\Move\Attack;
+use YoannLeonard\G\Model\Move\Defend;
+use YoannLeonard\G\Model\Move\Flee;
 
 class Rat extends Entity
 {

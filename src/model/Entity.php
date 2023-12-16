@@ -1,8 +1,8 @@
 <?php
 
-namespace YoannLeonard\G\model;
+namespace YoannLeonard\G\Model;
 
-use YoannLeonard\G\model\Move\Attack;
+use YoannLeonard\G\Model\Move\Attack;
 
 use function YoannLeonard\G\printLine;
 use function YoannLeonard\G\printLinesWithBreak;
@@ -245,6 +245,11 @@ class Entity
     public function isDefending(): bool
     {
         return $this->getState() === 'defending';
+    }
+
+    public function display(): string
+    {
+        return $this->getName();
     }
 
 
