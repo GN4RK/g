@@ -10,17 +10,14 @@ use YoannLeonard\G\Model\Move\Flee;
 class Player extends Entity
 {
     private $level;
-    private $experience;
-    private $gold;
-
 
     public function __construct(string $name, int $health, int $attack, int $defense)
     {
         parent::__construct($health, $attack, $defense);
         $this->setName($name);
         $this->level = 1;
-        $this->experience = 0;
-        $this->gold = 10;
+        parent::setExperience(0);
+        parent::setGold(10);
 
         $this->moveset->addMove(new Attack($this));
         $this->moveset->addMove(new Defend($this));
@@ -33,43 +30,41 @@ class Player extends Entity
         return $this->level;
     }
 
-    public function getExperience(): int
-    {
-        return $this->experience;
-    }
-
-    public function getGold(): int
-    {
-        return $this->gold;
-    }
-
     public function setLevel(int $level): void
     {
         $this->level = $level;
     }
 
-    public function setExperience(int $experience): void
-    {
-        $this->experience = $experience;
-    }
-
-    public function setGold(int $gold): void
-    {
-        $this->gold = $gold;
-    }
-
     public function levelUp(): void
     {
         $this->level++;
-        parent::setHealth(parent::getHealth() + 10);
-        parent::setAttack(parent::getAttack() + 5);
-        parent::setDefense(parent::getDefense() + 5);
+        parent::setmaxHealth(parent::getmaxHealth() + 2);
+        parent::setBaseAttack(parent::getBaseAttack() + 1);
+        parent::setBaseDefense(parent::getBaseDefense() + 1);
+        parent::fullHeal();
+    }
+
+    // return true if player level up
+    public function addExperience(int $experience): bool
+    {
+        parent::setExperience(parent::getExperience() + $experience);
+        if (parent::getExperience() >= 20) {
+            $this->levelUp();
+            parent::setExperience(parent::getExperience() - 20);
+            return true;
+        }
+        return false;
+    }
+
+    public function addGold(int $gold): void
+    {
+        parent::setGold(parent::getGold() + $gold);
     }
 
     public function __toString(): string
     {
         return "Player: ". $this->getName() .", Level: $this->level, Health: ".parent::getHealth().", 
-        Attack: ".parent::getAttack().", Defense: ".parent::getDefense().", Experience: $this->experience, Gold: $this->gold";
+        Attack: ". parent::getAttack() .", Defense: ". parent::getDefense() .", Experience: ". parent::getExperience() .", Gold: ". parent::getGold();
     }
 
     public function getStats(): array
@@ -80,9 +75,9 @@ class Player extends Entity
             "Health    : ".parent::getHealth() . "/" . parent::getmaxHealth(),
             "Attack    : ".parent::getAttack() . "+" . parent::getAttack() - parent::getBaseAttack(),
             "Defense   : ".parent::getBaseDefense() . "+" . parent::getDefense() - parent::getBaseDefense(),
-            "Experience: $this->experience",
-            "Gold      : $this->gold"
+            "Status    : ".parent::getStatus(),
+            "Experience: ".parent::getExperience(),
+            "Gold      : ".parent::getGold(),
         ];
     }
-
 }

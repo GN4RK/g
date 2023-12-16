@@ -9,6 +9,7 @@ use YoannLeonard\G\Model\Entity\Fight;
 use YoannLeonard\G\Game;
 
 use function YoannLeonard\G\printLine;
+use function YoannLeonard\G\printLines;
 use function YoannLeonard\G\printLineWithBreak;
 
 class FightController extends Controller
@@ -52,13 +53,14 @@ class FightController extends Controller
 
             $playerChoice = 4;
 
-            while ($playerChoice == 4) {
+            while ($playerChoice >= 4) {
                 // Player chooses an action
                 $playerChoice = Game::getInstance()->askChoice([
                     'Attack for ' . $player->getAttack() . ' damage',
                     'Defend for ' . ($player->getDefense() * 2) . ' damage',
                     'Run away',
-                    'View stats'
+                    'View stats',
+                    'Check inventory'
                 ]);
 
                 if ($playerChoice == 1) {
@@ -69,6 +71,12 @@ class FightController extends Controller
                     $player->chooseActionFromString('flee');
                 } elseif ($playerChoice == 4) {
                     $player->displayStats();
+                } elseif ($playerChoice == 5) {
+                    if ($player->getInventory()->isEmpty()) {
+                        printLine('Your inventory is empty.');
+                        continue;
+                    }
+                    printLines($player->getInventory()->getItems());
                 }
             }
 
@@ -99,9 +107,35 @@ class FightController extends Controller
 
         if ($player->isAlive()) {
             printLine($player->getName() . ' won the fight!');
+            $this->endFight($fight);
         } else {
             printLine($entity->getEntityName() . ' won the fight!');
         }
+    }
+
+    public function endFight(Fight $fight): void
+    {
+        $player = $fight->getPlayer();
+        $entity = $fight->getEntity();
+
+        printLine($player->getName() . ' gained ' . $entity->getExperience() . ' experience and ' . $entity->getGold() . ' gold!');
+
+        if ($player->addExperience($entity->getExperience())) {
+            printLine($player->getName() . ' gained a level!');
+            $player->displayStats();
+        }
+        $player->addGold($entity->getGold());
+        printLine($player->getName() . ' gained ' . $entity->getExperience() . ' experience and ' . $entity->getGold() . ' gold!');
+        printLine($player->getName() . ' now has ' . $player->getExperience() . ' experience and ' . $player->getGold() . ' gold!');
+
+        // get loot
+        $loots = $entity->getInventory()->getItems();
+
+        foreach ($loots as $loot) {
+            printLine('You found a ' . $loot->getName() . '!');
+            $player->getInventory()->addItem($loot);
+        }
+        
     }
 
     public function applyMoves(Fight $fight): void

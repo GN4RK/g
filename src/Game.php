@@ -41,11 +41,11 @@ class Game
     public function createPlayer($playerName): Player
     {
         if ($playerName == 'test') {
-            return new Player($playerName, 50, 25, 25);
+            return new Player($playerName, 10, 5, 5);
         }
-        $health = readIntInput('Enter your health: ', 50, 98);
-        $attack = readIntInput('Enter your attack: ', 1, 49);
-        $defense = readIntInput('Enter your defense: ', 1, 49);
+        $health = readIntInput('Enter your health: ', 10, 18);
+        $attack = readIntInput('Enter your attack: ', 1, 9);
+        $defense = readIntInput('Enter your defense: ', 1, 9);
 
         $player = new Player($playerName, $health, $attack, $defense);
 
@@ -62,8 +62,8 @@ class Game
         $attack = $player->getAttack();
         $defense = $player->getDefense();
 
-        if ($health < 50) {
-            printLine('Health can\'t be less than 50');
+        if ($health < 10) {
+            printLine('Health can\'t be less than 10');
             return false;
         }
 
@@ -77,8 +77,8 @@ class Game
             return false;
         }
 
-        if ($health + $attack + $defense > 100) {
-            printLine('You can\'t have more than 100 points in total');
+        if ($health + $attack + $defense > 20) {
+            printLine('You can\'t have more than 20 points in total');
             return false;
         }
 
@@ -117,6 +117,7 @@ class Game
                 'Shopping',
                 'Find Combat',
                 'Check stats',
+                'Check inventory',
                 'Save and quit'
             ]);
 
@@ -151,6 +152,13 @@ class Game
                     printLinesWithBreak($this->getPlayer()->getStats());
                     break;
                 case 4:
+                    if ($this->getPlayer()->getInventory()->isEmpty()) {
+                        printLine('Your inventory is empty.');
+                        break;
+                    }
+                    printLines($this->getPlayer()->getInventory()->getItems());
+                    break;
+                case 5:
                     $this->save();                    
                     exit;
                 default:
@@ -168,8 +176,8 @@ class Game
         $playerName = readInput('Enter your name: ');
         printLinesWithBreak([
             "Hello $playerName",
-            "You have 100 stat points to distribute between health, attack and defense.",
-            "Health can't be less than 50",
+            "You have 20 stat points to distribute between health, attack and defense.",
+            "Health can't be less than 10",
             "You can't have less than 1 point in any stat."
         ]);
 
@@ -259,8 +267,7 @@ class Game
     function randomEnemy(): Entity
     {
         $enemies = [
-            new Rat(),
-            new Pusheen()
+            new Rat()
         ];
 
         $randomIndex = rand(0, count($enemies) - 1);

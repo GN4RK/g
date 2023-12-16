@@ -19,8 +19,10 @@ class Entity
     private $attack;
     private $baseDefense;
     private $defense;
+    private $experience;
+    private $gold;
     private Move $move;
-
+    public $inventory;
     public $moveset;
 
     public const STATE = [
@@ -52,6 +54,8 @@ class Entity
         $this->attack = $baseAttack;
         $this->baseDefense = $baseDefense;
         $this->defense = $baseDefense;
+        $this->experience = 0;
+        $this->gold = 0;
 
         $entityClassPath = get_class($this);
         $nameParts = explode('\\', $entityClassPath);
@@ -59,6 +63,7 @@ class Entity
         $this->name = $this->entityName;
 
         $this->moveset = new Moveset();
+        $this->inventory = new Inventory();
     }
 
     public function getEntityName(): string
@@ -170,6 +175,31 @@ class Entity
         return $this->move;
     }
 
+    public function getExperience(): int
+    {
+        return $this->experience;
+    }
+
+    public function getGold(): int
+    {
+        return $this->gold;
+    }
+
+    public function setExperience(int $experience): void
+    {
+        $this->experience = $experience;
+    }
+
+    public function setGold(int $gold): void
+    {
+        $this->gold = $gold;
+    }
+
+    public function getInventory(): Inventory
+    {
+        return $this->inventory;
+    }
+
     public function chooseRandomAction(): void
     {
         $randomNumber = mt_rand() / mt_getrandmax();
@@ -219,6 +249,15 @@ class Entity
         return $this->name;
     }
 
+    public function fullHeal(): void
+    {
+        $this->setHealth($this->getmaxHealth());
+        $this->setAttack($this->getBaseAttack());
+        $this->setDefense($this->getBaseDefense());
+        $this->setStatus('normal');
+
+    }
+
     public function displayStats(): void
     {
         printLinesWithBreak($this->getStats());
@@ -250,6 +289,14 @@ class Entity
     public function display(): string
     {
         return $this->getName();
+    }
+
+    public function heal(int $heal): void
+    {
+        $this->setHealth($this->getHealth() + $heal);
+        if ($this->getHealth() > $this->getmaxHealth()) {
+            $this->setHealth($this->getmaxHealth());
+        }
     }
 
 
