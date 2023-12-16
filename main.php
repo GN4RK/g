@@ -13,7 +13,7 @@ function readInput(string $prompt = ''): string
 
 function readIntInput(string $prompt = '', int $min = 0, int $max = 100): int
 {
-    $input = readInput($prompt, $min, $max);
+    $input = readInput($prompt);
     if (!is_numeric($input)) {
         printLine('Please enter a valid integer');
         return readIntInput($prompt, $min, $max);
