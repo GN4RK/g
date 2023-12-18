@@ -125,8 +125,6 @@ class FightController extends Controller
             $player->displayStats();
         }
         $player->addGold($entity->getGold());
-        printLine($player->getName() . ' gained ' . $entity->getExperience() . ' experience and ' . $entity->getGold() . ' gold!');
-        printLine($player->getName() . ' now has ' . $player->getExperience() . ' experience and ' . $player->getGold() . ' gold!');
 
         // get loot
         $loots = $entity->getInventory()->getItems();
