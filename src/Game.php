@@ -5,9 +5,9 @@ namespace YoannLeonard\G;
 use Exception;
 use YoannLeonard\G\Controller\EntityController;
 use YoannLeonard\G\Controller\FightController;
+use YoannLeonard\G\Controller\ItemController;
 use YoannLeonard\G\Model\Entity;
 use YoannLeonard\G\Model\Entity\Player;
-use YoannLeonard\G\Model\Entity\Pusheen;
 use YoannLeonard\G\Model\Entity\Rat;
 
 // singleton class
@@ -106,10 +106,14 @@ class Game
         $this->mainLoop();
     }
 
+    /**
+     * @throws Exception
+     */
     function mainLoop()
     {
         $fightController = FightController::getInstance();
         $entityController = EntityController::getInstance();
+        $itemController = ItemController::getInstance();
         
         while ($this->getPlayer()->isAlive()) {
 
@@ -156,7 +160,44 @@ class Game
                         printLine('Your inventory is empty.');
                         break;
                     }
-                    printLines($this->getPlayer()->getInventory()->getItems());
+                    $items = $this->getPlayer()->getInventory()->getItems();
+                    $choice = $this->askChoice(
+                        array_merge($items, ['Back']),
+                        1,
+                        count($items) + 1,
+                        'Choose an item:'
+                    );
+
+                    // check if $items[$choice] exists
+                    if ($choice == count($items) + 1) {
+                        break;
+                    }
+
+                    $chosenItem = $items[$choice - 1];
+
+                    $choice = $this->askChoice([
+                        'Use',
+                        'View',
+                        'Drop'
+                    ]);
+
+                    switch ($choice) {
+                        case 1:
+                            printLineWithBreak('You used ' . $chosenItem->getName());
+                            $this->getPlayer()->getInventory()->useItem($chosenItem, $this->getPlayer());
+                            break;
+                        case 2:
+                            printLine($itemController->renderItem($chosenItem));
+                            break;
+                        case 3:
+                            $this->getPlayer()->getInventory()->removeItem($chosenItem);
+                            printLineWithBreak('Item dropped');
+                            break;
+                    }
+
+
+
+
                     break;
                 case 5:
                     $this->save();                    
