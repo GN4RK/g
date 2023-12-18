@@ -9,7 +9,7 @@ class Cheese extends Item
 {
     public function __construct()
     {
-        parent::__construct('Cheese', 5);
+        parent::__construct('🧀 Cheese', 5);
     }
 
     public function use(Entity $entity): void
