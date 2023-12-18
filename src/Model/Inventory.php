@@ -22,6 +22,13 @@ class Inventory
     {
         $key = array_search($item, $this->items);
         unset($this->items[$key]);
+        $this->reorganize();
+    }
+
+    public function useItem(Item $item, Entity $entity): void
+    {
+        $item->use($entity);
+        $this->removeItem($item);
     }
 
     public function getItems(): array
@@ -41,5 +48,10 @@ class Inventory
     public function isEmpty(): bool
     {
         return empty($this->items);
+    }
+
+    public function reorganize(): void
+    {
+        $this->items = array_values($this->items);
     }
 }
