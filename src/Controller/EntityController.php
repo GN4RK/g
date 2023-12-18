@@ -22,10 +22,6 @@ class EntityController extends Controller
     public function renderEntity(Entity $entity): string
     {
         $name = $entity->getEntityName();
-
-        // get entity file content
-        $fileContent = file_get_contents('src/View/Entity/' . $name);
-
-        return $fileContent;
+        return file_get_contents('src/View/Entity/' . $name);
     }
 }
