@@ -4,6 +4,7 @@ namespace YoannLeonard\G\Model\Entity;
 
 use YoannLeonard\G\Model\Entity;
 use YoannLeonard\G\Model\Item\Cheese;
+use YoannLeonard\G\Model\Item\RatDancePartyInvitation;
 use YoannLeonard\G\Model\Move\Attack;
 use YoannLeonard\G\Model\Move\Defend;
 use YoannLeonard\G\Model\Move\Flee;
@@ -51,6 +52,7 @@ class Rat extends Entity
         $this->moveset->addMove(new Flee($this), 0.1);
 
         parent::getInventory()->addItem(new Cheese());
+        parent::getInventory()->addItem(new RatDancePartyInvitation());
 
     }
 
