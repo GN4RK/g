@@ -13,11 +13,6 @@ class RatDancePartyInvitation extends Item
         parent::__construct('✉️ Rat Dance Party Invitation', 5);
     }
 
-    public function use(Entity $entity): array
-    {
-        return [
-            'Rat Dance Party Invitation',
-        ];
-
-    }
+    public function use(Entity $entity): void
+    {}
 }
