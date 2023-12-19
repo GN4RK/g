@@ -22,4 +22,14 @@ class ItemController extends Controller
         $itemName = $item->getItemName();
         return file_get_contents(filename: 'src/View/Item/' . $itemName);
     }
+
+    public function createItem(string $itemName): ?Item
+    {
+        $className = 'YoannLeonard\G\Model\Item\\' . ucfirst($itemName);
+        if (class_exists($className)) {
+            return new $className();
+        } else {
+            return null;
+        }
+    }
 }

@@ -166,19 +166,26 @@ class Game
                         break;
                     }
                     $items = $this->getPlayer()->getInventory()->getItems();
+
+                    $displayItems = [];
+                    foreach ($items as $itemName => $quantity) {
+                        $displayItems[] = $itemName . ' (' . $quantity . ')';
+                    }
+                        
+
                     $choice = $this->askChoice(
-                        array_merge($items, ['Back']),
+                        array_merge($displayItems, ['Back']),
                         1,
-                        count($items) + 1,
+                        count($displayItems) + 1,
                         'Choose an item:'
                     );
 
                     // check if $items[$choice] exists
-                    if ($choice == count($items) + 1) {
+                    if ($choice == count($displayItems) + 1) {
                         break;
                     }
 
-                    $chosenItem = $items[$choice - 1];
+                    $chosenItem = $displayItems[$choice - 1];
 
                     $choice = $this->askChoice([
                         'Use',

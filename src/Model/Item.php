@@ -7,6 +7,7 @@ abstract class Item
     private string $itemName;
     private string $name;
     private int $price;
+    private int $rate;
 
     public function __construct(string $name, int $price)
     {
@@ -16,6 +17,8 @@ abstract class Item
         $itemClassPath = get_class($this);
         $nameParts = explode('\\', $itemClassPath);
         $this->setItemName(end($nameParts));
+
+        $this->setRate(100);
     }
 
     public function getItemName(): string
@@ -46,6 +49,16 @@ abstract class Item
     public function setPrice(int $price): void
     {
         $this->price = $price;
+    }
+
+    public function getRate(): int
+    {
+        return $this->rate;
+    }
+
+    public function setRate(int $rate): void
+    {
+        $this->rate = $rate;
     }
 
     public function __toString() : string

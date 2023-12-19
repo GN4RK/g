@@ -115,6 +115,8 @@ class FightController extends Controller
 
     public function endFight(Fight $fight): void
     {
+        $inventoryController = InventoryController::getInstance();
+
         $player = $fight->getPlayer();
         $entity = $fight->getEntity();
 
@@ -126,13 +128,8 @@ class FightController extends Controller
         }
         $player->addGold($entity->getGold());
 
-        // get loot
-        $loots = $entity->getInventory()->getItems();
-
-        foreach ($loots as $loot) {
-            printLine('You found a ' . $loot->getName() . '!');
-            $player->getInventory()->addItem($loot);
-        }
+        $lootedItems = $inventoryController->lootItem($entity->getInventory());
+        $inventoryController->addItems($lootedItems, $player->getInventory());
         
     }
 

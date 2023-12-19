@@ -10,6 +10,7 @@ class Cheese extends Item
     public function __construct()
     {
         parent::__construct('🧀 Cheese', 5);
+        $this->setRate(95);
     }
 
     public function use(Entity $entity): void
