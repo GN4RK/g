@@ -5,6 +5,7 @@ namespace YoannLeonard\G;
 use Exception;
 use YoannLeonard\G\Controller\EntityController;
 use YoannLeonard\G\Controller\FightController;
+use YoannLeonard\G\Controller\InventoryController;
 use YoannLeonard\G\Controller\ItemController;
 use YoannLeonard\G\Model\Entity;
 use YoannLeonard\G\Model\Entity\Player;
@@ -86,6 +87,9 @@ class Game
 
     }
 
+    /**
+     * @throws Exception
+     */
     public function start(): void
     {
         printLineWithBreak('Welcome to the game');
@@ -109,11 +113,12 @@ class Game
     /**
      * @throws Exception
      */
-    function mainLoop()
+    function mainLoop(): void
     {
         $fightController = FightController::getInstance();
         $entityController = EntityController::getInstance();
         $itemController = ItemController::getInstance();
+        $inventoryController = InventoryController::getInstance();
         
         while ($this->getPlayer()->isAlive()) {
 
@@ -183,15 +188,13 @@ class Game
 
                     switch ($choice) {
                         case 1:
-                            printLineWithBreak('You used ' . $chosenItem->getName());
-                            $this->getPlayer()->getInventory()->useItem($chosenItem, $this->getPlayer());
+                            $inventoryController->useItem($this->getPlayer(), $chosenItem);
                             break;
                         case 2:
                             printLine($itemController->renderItem($chosenItem));
                             break;
                         case 3:
-                            $this->getPlayer()->getInventory()->removeItem($chosenItem);
-                            printLineWithBreak('Item dropped');
+                            $inventoryController->dropItem($this->getPlayer(), $chosenItem);
                             break;
                     }
 
