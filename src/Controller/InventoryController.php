@@ -52,15 +52,10 @@ class InventoryController extends Controller
         $itemController = ItemController::getInstance();
         $lootedItem = [];
 
-        foreach ($inventory->getItems() as $itemName => $quantity) {
-
-            $item = $itemController->createItem($itemName);
-
-            for ($i = 0; $i < $quantity; $i++) {
-                if ($item->getRate() >= rand(1, 100)) {
-                    $lootedItem[] = $item;
-                    printLine("You looted " . $item->getName());
-                }
+        foreach ($inventory->getItems() as $item) {
+            if ($item->getRate() >= rand(1, 100)) {
+                $lootedItem[] = $item;
+                printLine("You looted " . $item->getName());
             }
         }
 

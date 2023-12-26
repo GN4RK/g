@@ -13,15 +13,9 @@ class Inventory
         $this->items = [];
     }
 
-    public function addItem(Item $item, int $quantity = 1): void
+    public function addItem(Item $item): void
     {
-        $itemName = $item->getItemName();
-
-        if (array_key_exists($itemName, $this->items)) {
-            $this->items[$itemName] += $quantity;
-        } else {
-            $this->items[$itemName] = $quantity;
-        }
+        $this->items[] = $item;
     }
 
     public function removeItem(Item $item): void
@@ -46,7 +40,7 @@ class Inventory
     {
         $string = "";
         foreach ($this->items as $item) {
-            $string .= $item->getName() . " ";
+            $string .= $item->getName() . "\n";
         }
         return $string;
     }
