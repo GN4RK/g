@@ -117,8 +117,6 @@ class Game
     {
         $fightController = FightController::getInstance();
         $entityController = EntityController::getInstance();
-        $itemController = ItemController::getInstance();
-        $inventoryController = InventoryController::getInstance();
         
         while ($this->getPlayer()->isAlive()) {
 
@@ -165,40 +163,7 @@ class Game
                         printLine('Your inventory is empty.');
                         break;
                     }
-                    $items = $this->getPlayer()->getInventory()->getItems();
-
-                    $choice = $this->askChoice(
-                        array_merge($items, ['Back']),
-                        1,
-                        count($items) + 1,
-                        'Choose an item:'
-                    );
-
-                    // check if $items[$choice] exists
-                    if ($choice == count($items) + 1) {
-                        break;
-                    }
-
-                    $chosenItem = $items[$choice - 1];
-
-                    $choice = $this->askChoice([
-                        'Use',
-                        'View',
-                        'Drop'
-                    ]);
-
-                    switch ($choice) {
-                        case 1:
-                            $inventoryController->useItem($this->getPlayer(), $chosenItem);
-                            break;
-                        case 2:
-                            printLine($itemController->renderItem($chosenItem));
-                            break;
-                        case 3:
-                            $inventoryController->dropItem($this->getPlayer(), $chosenItem);
-                            break;
-                    }
-
+                    $this->inventory();
                     break;
                 case 5:
                     $this->save();                    
@@ -315,6 +280,73 @@ class Game
         $randomIndex = rand(0, count($enemies) - 1);
         return $enemies[$randomIndex];
 
+    }
+
+    function inventory(): void
+    {
+        $itemController = ItemController::getInstance();
+        $inventoryController = InventoryController::getInstance();
+
+        $items = $this->getPlayer()->getInventory()->getItems();
+
+        // get item class names
+        $itemClassNames = [];
+        foreach ($items as $item) {
+            $itemClassNames[] = get_class($item);
+        }
+
+        // unique
+        $itemClassNames = array_unique($itemClassNames);
+
+        // get item quantity
+        $itemQuantities = [];
+        foreach ($itemClassNames as $itemClassName) {
+            $itemQuantities[$itemClassName] = 0;
+        }
+
+        foreach ($items as $item) {
+            $itemQuantities[get_class($item)]++;
+        }
+
+        // display items
+        $displayedItems = [];
+        $firstAndQuantity = [];
+        foreach ($itemQuantities as $itemClassName => $itemQuantity) {
+            // get first item of this class
+            $firstItem = $items[array_search($itemClassName, $itemClassNames)];
+            $firstAndQuantity[] = [$firstItem, $itemQuantity];
+        }
+
+        foreach ($firstAndQuantity as $itemAndQuantity) {
+            $displayedItems[] = $itemAndQuantity[0]->getName() . ' x' . $itemAndQuantity[1];
+        }
+
+        $choice = $this->askChoice(
+            array_merge($displayedItems, ['Back']),
+            1,
+            count($items) + 1,
+            'Choose an item:'
+        );
+
+        $chosenItem = $firstAndQuantity[$choice - 1][0];
+
+        $choice = $this->askChoice([
+            'Use',
+            'View',
+            'Drop'
+        ]);
+
+        switch ($choice) {
+            case 1:
+                $inventoryController->useItem($this->getPlayer(), $chosenItem);
+                break;
+            case 2:
+                printLine($itemController->renderItem($chosenItem));
+                break;
+            case 3:
+                $inventoryController->dropItem($this->getPlayer(), $chosenItem);
+                break;
+        }
     }
 
         
