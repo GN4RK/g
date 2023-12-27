@@ -120,19 +120,28 @@ class Game
         
         while ($this->getPlayer()->isAlive()) {
 
-            $choice = $this->askChoice([
-                'Shopping',
-                'Find Combat',
-                'Check stats',
-                'Check inventory',
-                'Save and quit'
-            ]);
+            $choice = $this->askChoice(
+                $this->getPlayer()->getMenuActions()
+            );
 
             switch ($choice) {
                 case 1:
-                    printLineWithBreak('Shopping not implemented yet');
+                    printLinesWithBreak($this->getPlayer()->getStats());
                     break;
                 case 2:
+                    if ($this->getPlayer()->getInventory()->isEmpty()) {
+                        printLine('Your inventory is empty.');
+                        break;
+                    }
+                    $this->inventory();
+                    break;
+                case 3:
+                    $this->save();
+                    exit;
+                case 4:
+                    printLineWithBreak('Shopping not implemented yet');
+                    break;
+                case 5:
                     printLineWithBreak('Searching for combat...');
                     
                     $enemy = $this->randomEnemy();
@@ -152,22 +161,7 @@ class Game
                     $fight = $fightController->createFight($this->getPlayer(), $enemy);
                     printLineWithBreak('A fight has started between ' . $fight->getPlayer()->getName() . ' and ' . $fight->getEntity()->getEntityName() . '!');
                     $fightController->startFight($fight);
-
-
                     break;
-                case 3:
-                    printLinesWithBreak($this->getPlayer()->getStats());
-                    break;
-                case 4:
-                    if ($this->getPlayer()->getInventory()->isEmpty()) {
-                        printLine('Your inventory is empty.');
-                        break;
-                    }
-                    $this->inventory();
-                    break;
-                case 5:
-                    $this->save();                    
-                    exit;
                 default:
                     printLineWithBreak('Invalid choice');
                     break;
@@ -328,6 +322,10 @@ class Game
             'Choose an item:'
         );
 
+        if ($choice == count($items) + 1) {
+            return;
+        }
+
         $chosenItem = $firstAndQuantity[$choice - 1][0];
 
         $choice = $this->askChoice([
@@ -338,7 +336,9 @@ class Game
 
         switch ($choice) {
             case 1:
-                $inventoryController->useItem($this->getPlayer(), $chosenItem);
+                printLine(
+                    $inventoryController->useItem($this->getPlayer(), $chosenItem)
+                );
                 break;
             case 2:
                 printLine($itemController->renderItem($chosenItem));
