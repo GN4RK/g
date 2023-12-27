@@ -10,6 +10,9 @@ use YoannLeonard\G\Model\Move\Flee;
 class Player extends Entity
 {
     private $level;
+    private bool $hasAccessToShop;
+    private bool $hasAccessToSewer;
+
 
     public function __construct(string $name, int $health, int $attack, int $defense)
     {
@@ -18,6 +21,9 @@ class Player extends Entity
         $this->level = 1;
         parent::setExperience(0);
         parent::setGold(10);
+
+        $this->hasAccessToShop = true;
+        $this->hasAccessToSewer = true;
 
         $this->moveset->addMove(new Attack($this));
         $this->moveset->addMove(new Defend($this));
@@ -80,4 +86,44 @@ class Player extends Entity
             "Gold      : ".parent::getGold(),
         ];
     }
+
+    public function getMenuActions(): array
+    {
+        $actions = [
+            'Check stats',
+            'Check inventory',
+            'Save and quit',
+        ];
+
+        if ($this->hasAccessToShop()) {
+            $actions[] = 'Go to the shop';
+        }
+
+        if ($this->hasAccessToSewer()) {
+            $actions[] = 'Go to the sewer';
+        }
+        return $actions;
+    }
+
+    public function hasAccessToShop(): bool
+    {
+        return $this->hasAccessToShop;
+    }
+
+    public function setHasAccessToShop(bool $hasAccessToShop): void
+    {
+        $this->hasAccessToShop = $hasAccessToShop;
+    }
+
+    public function hasAccessToSewer(): bool
+    {
+        return $this->hasAccessToSewer;
+    }
+
+    public function setHasAccessToSewer(bool $hasAccessToSewer): void
+    {
+        $this->hasAccessToSewer = $hasAccessToSewer;
+    }
+
+    
 }
