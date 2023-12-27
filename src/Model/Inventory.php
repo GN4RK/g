@@ -25,10 +25,13 @@ class Inventory
         $this->reorganize();
     }
 
-    public function useItem(Item $item, Entity $entity): void
+    public function useItem(Item $item, Entity $entity): string
     {
         $item->use($entity);
-        $this->removeItem($item);
+        if ($item->getRemoveOnUse()) {
+            $this->removeItem($item);
+        }
+        return $item->getMessageOnUse($entity);
     }
 
     public function getItems(): array

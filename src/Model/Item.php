@@ -8,6 +8,7 @@ abstract class Item
     private string $name;
     private int $price;
     private int $rate;
+    private bool $removeOnUse = true;
 
     public function __construct(string $name, int $price)
     {
@@ -59,6 +60,21 @@ abstract class Item
     public function setRate(int $rate): void
     {
         $this->rate = $rate;
+    }
+
+    public function getRemoveOnUse(): bool
+    {
+        return $this->removeOnUse;
+    }
+
+    public function setRemoveOnUse(bool $removeOnUse): void
+    {
+        $this->removeOnUse = $removeOnUse;
+    }
+
+    public function getMessageOnUse(Entity $entity): string
+    {
+        return $entity->getName() . " used " . $this->getName();
     }
 
     public function __toString() : string

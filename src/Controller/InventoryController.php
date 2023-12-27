@@ -27,10 +27,9 @@ class InventoryController extends Controller
      * @param Entity $entity
      * @param Item $item
      */
-    public function useItem(Entity $entity, Item $item): void
+    public function useItem(Entity $entity, Item $item): string
     {
-        $entity->getInventory()->useItem($item, $entity);
-        printLine($entity->getName() . " used " . $item->getName());
+        return $entity->getInventory()->useItem($item, $entity);
     }
 
     /**

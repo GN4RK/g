@@ -17,4 +17,9 @@ class Cheese extends Item
     {
         $entity->heal(5);
     }
+
+    public function getMessageOnUse(Entity $entity): string
+    {
+        return $entity->getName() . " ate " . $this->getName() . " and healed 5 HP";
+    }
 }
