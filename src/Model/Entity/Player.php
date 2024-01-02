@@ -9,7 +9,7 @@ use YoannLeonard\G\Model\Move\Flee;
 
 class Player extends Entity
 {
-    private $level;
+    private int $level;
     private bool $hasAccessToShop;
     private bool $hasAccessToSewer;
 
@@ -23,7 +23,7 @@ class Player extends Entity
         parent::setGold(10);
 
         $this->hasAccessToShop = true;
-        $this->hasAccessToSewer = true;
+        $this->hasAccessToSewer = false;
 
         $this->moveset->addMove(new Attack($this));
         $this->moveset->addMove(new Defend($this));
@@ -44,7 +44,7 @@ class Player extends Entity
     public function levelUp(): void
     {
         $this->level++;
-        parent::setmaxHealth(parent::getmaxHealth() + 2);
+        parent::setmaxHealth(parent::getMaxHealth() + 2);
         parent::setBaseAttack(parent::getBaseAttack() + 1);
         parent::setBaseDefense(parent::getBaseDefense() + 1);
         parent::fullHeal();
@@ -78,7 +78,7 @@ class Player extends Entity
         return [
             "Player    : ". $this->getName(),
             "Level     : $this->level",
-            "Health    : ".parent::getHealth() . "/" . parent::getmaxHealth(),
+            "Health    : ".parent::getHealth() . "/" . parent::getMaxHealth(),
             "Attack    : ".parent::getAttack() . "+" . parent::getAttack() - parent::getBaseAttack(),
             "Defense   : ".parent::getBaseDefense() . "+" . parent::getDefense() - parent::getBaseDefense(),
             "Status    : ".parent::getStatus(),

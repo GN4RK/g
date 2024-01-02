@@ -81,7 +81,7 @@ class Entity
         return $this->health;
     }
 
-    public function getmaxHealth(): int
+    public function getMaxHealth(): int
     {
         return $this->maxHealth;
     }
@@ -251,7 +251,7 @@ class Entity
 
     public function fullHeal(): void
     {
-        $this->setHealth($this->getmaxHealth());
+        $this->setHealth($this->getMaxHealth());
         $this->setAttack($this->getBaseAttack());
         $this->setDefense($this->getBaseDefense());
         $this->setStatus('normal');
@@ -267,7 +267,7 @@ class Entity
     {
         return [
             "Name      : " . $this->getName(),
-            "Health    : " . $this->getHealth() . '/' . $this->getmaxHealth(),
+            "Health    : " . $this->getHealth() . '/' . $this->getMaxHealth(),
             "Attack    : " . $this->getAttack(),
             "Defense   : " . $this->getDefense(),
             "Status    : " . $this->getStatus(),
@@ -294,8 +294,8 @@ class Entity
     public function heal(int $heal): void
     {
         $this->setHealth($this->getHealth() + $heal);
-        if ($this->getHealth() > $this->getmaxHealth()) {
-            $this->setHealth($this->getmaxHealth());
+        if ($this->getHealth() > $this->getMaxHealth()) {
+            $this->setHealth($this->getMaxHealth());
         }
     }
 

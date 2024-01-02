@@ -9,7 +9,7 @@ final class PlayerTest extends TestCase
     {
         $player = new Player("PlayerTest", 100, 100, 100);
         $this->assertEquals("PlayerTest", $player->getName());
-        $this->assertEquals(100, $player->getmaxHealth());
+        $this->assertEquals(100, $player->getMaxHealth());
         $this->assertEquals(100, $player->getBaseAttack());
         $this->assertEquals(100, $player->getBaseDefense());
         $this->assertEquals(100, $player->getHealth());
@@ -33,7 +33,7 @@ final class PlayerTest extends TestCase
 
         $player->setHealth(50);
         $this->assertEquals(50, $player->getHealth());
-        $this->assertEquals(100, $player->getmaxHealth());
+        $this->assertEquals(100, $player->getMaxHealth());
 
         $player->setAttack(50);
         $this->assertEquals(50, $player->getAttack());
@@ -44,7 +44,7 @@ final class PlayerTest extends TestCase
         $this->assertEquals(100, $player->getBaseDefense());
 
         $player->setmaxHealth(200);
-        $this->assertEquals(200, $player->getmaxHealth());
+        $this->assertEquals(200, $player->getMaxHealth());
         $this->assertEquals(50, $player->getHealth());
 
         $player->setBaseAttack(200);

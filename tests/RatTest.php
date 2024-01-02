@@ -8,7 +8,7 @@ final class RatTest extends TestCase
     {
         $rat = new Rat();
         $this->assertEquals("Rat", $rat->getEntityName());
-        $this->assertEquals(10, $rat->getmaxHealth());
+        $this->assertEquals(10, $rat->getMaxHealth());
         $this->assertEquals(5, $rat->getBaseAttack());
         $this->assertEquals(5, $rat->getBaseDefense());
         $this->assertEquals(10, $rat->getHealth());
@@ -25,7 +25,7 @@ final class RatTest extends TestCase
 
         $rat->setHealth(50);
         $this->assertEquals(50, $rat->getHealth());
-        $this->assertEquals(10, $rat->getmaxHealth());
+        $this->assertEquals(10, $rat->getMaxHealth());
 
         $rat->setAttack(50);
         $this->assertEquals(50, $rat->getAttack());
@@ -36,7 +36,7 @@ final class RatTest extends TestCase
         $this->assertEquals(5, $rat->getBaseDefense());
 
         $rat->setmaxHealth(200);
-        $this->assertEquals(200, $rat->getmaxHealth());
+        $this->assertEquals(200, $rat->getMaxHealth());
         $this->assertEquals(50, $rat->getHealth());
 
         $rat->setBaseAttack(200);
