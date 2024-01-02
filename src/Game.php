@@ -10,6 +10,8 @@ use YoannLeonard\G\Controller\ItemController;
 use YoannLeonard\G\Model\Entity;
 use YoannLeonard\G\Model\Entity\Player;
 use YoannLeonard\G\Model\Entity\Rat;
+use YoannLeonard\G\Model\Item\SewerMap;
+use YoannLeonard\G\Model\Shop;
 
 // singleton class
 class Game
@@ -107,6 +109,10 @@ class Game
             }
         }
 
+        // creating shop
+        $shop = Shop::getInstance();
+        $shop->addItem(new SewerMap());
+
         $this->mainLoop();
     }
 
@@ -117,7 +123,7 @@ class Game
     {
         $fightController = FightController::getInstance();
         $entityController = EntityController::getInstance();
-        
+
         while ($this->getPlayer()->isAlive()) {
 
             $menuAction = $this->getPlayer()->getMenuActions();
@@ -139,7 +145,29 @@ class Game
                     $this->save();
                     exit;
                 case 'Go to the shop':
-                    printLineWithBreak('Shopping not implemented yet');
+                    $shop = Shop::getInstance();
+                    $items = $shop->getItems();
+                    $choices = [];
+                    foreach ($items as $item) {
+                        $choices[] = $item->getName() . ' (' . $item->getPrice() . ' gold)';
+                    }
+                    $choices[] = 'Back';
+                    $choice = $this->askChoice($choices, 1, 100, 'Choose an item to buy:');
+                    if ($choice == count($choices)) {
+                        break;
+                    }
+                    $chosenItem = $items[$choice - 1];
+                    if ($this->getPlayer()->getGold() < $chosenItem->getPrice()) {
+                        printLineWithBreak('You don\'t have enough gold');
+                        break;
+                    }
+                    $this->getPlayer()->setGold($this->getPlayer()->getGold() - $chosenItem->getPrice());
+                    $this->getPlayer()->getInventory()->addItem($chosenItem);
+
+                    $shop->removeItem($chosenItem);
+                    printLineWithBreak('You bought a ' . $chosenItem->getName());
+
+
                     break;
                 case 'Go to the sewer':
                     printLineWithBreak('Searching for combat...');
