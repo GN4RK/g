@@ -120,28 +120,28 @@ class Game
         
         while ($this->getPlayer()->isAlive()) {
 
-            $choice = $this->askChoice(
-                $this->getPlayer()->getMenuActions()
-            );
+            $menuAction = $this->getPlayer()->getMenuActions();
 
-            switch ($choice) {
-                case 1:
+            $choice = $this->askChoice($menuAction);
+
+            switch ($menuAction[$choice-1]) {
+                case 'Check stats':
                     printLinesWithBreak($this->getPlayer()->getStats());
                     break;
-                case 2:
+                case 'Check inventory':
                     if ($this->getPlayer()->getInventory()->isEmpty()) {
-                        printLine('Your inventory is empty.');
+                        printLineWithBreak('Your inventory is empty.');
                         break;
                     }
                     $this->inventory();
                     break;
-                case 3:
+                case 'Save and quit':
                     $this->save();
                     exit;
-                case 4:
+                case 'Go to the shop':
                     printLineWithBreak('Shopping not implemented yet');
                     break;
-                case 5:
+                case 'Go to the sewer':
                     printLineWithBreak('Searching for combat...');
                     
                     $enemy = $this->randomEnemy();
