@@ -10,6 +10,7 @@ use YoannLeonard\G\Controller\ItemController;
 use YoannLeonard\G\Model\Entity;
 use YoannLeonard\G\Model\Entity\Player;
 use YoannLeonard\G\Model\Entity\Rat;
+use YoannLeonard\G\Model\Item\Cheese;
 use YoannLeonard\G\Model\Item\SewerMap;
 use YoannLeonard\G\Model\Shop;
 
@@ -112,6 +113,7 @@ class Game
         // creating shop
         $shop = Shop::getInstance();
         $shop->addItem(new SewerMap());
+        $shop->addItem(new Cheese());
 
         $this->mainLoop();
     }
@@ -135,39 +137,13 @@ class Game
                     printLinesWithBreak($this->getPlayer()->getStats());
                     break;
                 case 'Check inventory':
-                    if ($this->getPlayer()->getInventory()->isEmpty()) {
-                        printLineWithBreak('Your inventory is empty.');
-                        break;
-                    }
                     $this->inventory();
                     break;
                 case 'Save and quit':
                     $this->save();
                     exit;
                 case 'Go to the shop':
-                    $shop = Shop::getInstance();
-                    $items = $shop->getItems();
-                    $choices = [];
-                    foreach ($items as $item) {
-                        $choices[] = $item->getName() . ' (' . $item->getPrice() . ' gold)';
-                    }
-                    $choices[] = 'Back';
-                    $choice = $this->askChoice($choices, 1, 100, 'Choose an item to buy:');
-                    if ($choice == count($choices)) {
-                        break;
-                    }
-                    $chosenItem = $items[$choice - 1];
-                    if ($this->getPlayer()->getGold() < $chosenItem->getPrice()) {
-                        printLineWithBreak('You don\'t have enough gold');
-                        break;
-                    }
-                    $this->getPlayer()->setGold($this->getPlayer()->getGold() - $chosenItem->getPrice());
-                    $this->getPlayer()->getInventory()->addItem($chosenItem);
-
-                    $shop->removeItem($chosenItem);
-                    printLineWithBreak('You bought a ' . $chosenItem->getName());
-
-
+                    $this->shop();
                     break;
                 case 'Go to the sewer':
                     printLineWithBreak('Searching for combat...');
@@ -306,6 +282,11 @@ class Game
 
     function inventory(): void
     {
+        if ($this->getPlayer()->getInventory()->isEmpty()) {
+            printLineWithBreak('Your inventory is empty.');
+            return;
+        }
+
         $itemController = ItemController::getInstance();
         $inventoryController = InventoryController::getInstance();
 
@@ -375,6 +356,31 @@ class Game
                 $inventoryController->dropItem($this->getPlayer(), $chosenItem);
                 break;
         }
+    }
+
+    function shop(): void
+    {
+        $shop = Shop::getInstance();
+        $items = $shop->getItems();
+        $choices = [];
+        foreach ($items as $item) {
+            $choices[] = $item->getName() . ' (' . $item->getPrice() . ' gold)';
+        }
+        $choices[] = 'Back';
+        $choice = $this->askChoice($choices, 1, 100, 'You have ' . $this->getPlayer()->getGold() . ' gold. Choose an item:');
+        if ($choice == count($choices)) {
+            return;
+        }
+        $chosenItem = $items[$choice - 1];
+        if ($this->getPlayer()->getGold() < $chosenItem->getPrice()) {
+            printLineWithBreak('You don\'t have enough gold');
+            return;
+        }
+        $this->getPlayer()->setGold($this->getPlayer()->getGold() - $chosenItem->getPrice());
+        $this->getPlayer()->getInventory()->addItem($chosenItem);
+
+        $shop->removeItem($chosenItem);
+        printLineWithBreak('You bought a ' . $chosenItem->getName());
     }
 
         
