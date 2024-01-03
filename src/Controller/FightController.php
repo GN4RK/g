@@ -121,12 +121,12 @@ class FightController extends Controller
         $entity = $fight->getEntity();
 
         printLine($player->getName() . ' gained ' . $entity->getExperience() . ' experience and ' . $entity->getGold() . ' gold!');
+        $player->addGold($entity->getGold());
 
         if ($player->addExperience($entity->getExperience())) {
             printLine($player->getName() . ' gained a level!');
             $player->displayStats();
         }
-        $player->addGold($entity->getGold());
 
         $lootedItems = $inventoryController->lootItem($entity->getInventory());
         $inventoryController->addItems($lootedItems, $player->getInventory());
