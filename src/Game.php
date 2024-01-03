@@ -327,11 +327,11 @@ class Game
         $choice = $this->askChoice(
             array_merge($displayedItems, ['Back']),
             1,
-            count($items) + 1,
+            count($firstAndQuantity) + 1,
             'Choose an item:'
         );
 
-        if ($choice == count($items) + 1) {
+        if ($choice == count($firstAndQuantity) + 1) {
             return;
         }
 
