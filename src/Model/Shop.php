@@ -24,6 +24,11 @@ class Shop
         return self::$instance;
     }
 
+    public static function setInstance(Shop $instance): void
+    {
+        self::$instance = $instance;
+    }
+
     public function addItem(Item $item): void
     {
         $this->items[] = $item;
