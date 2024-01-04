@@ -110,11 +110,6 @@ class Game
             }
         }
 
-        // creating shop
-        $shop = Shop::getInstance();
-        $shop->addItem(new SewerMap());
-        $shop->addItem(new Cheese());
-
         $this->mainLoop();
     }
 
@@ -194,19 +189,32 @@ class Game
 
         printLineWithBreak('Your stats are valid');
         printLines($this->getPlayer()->getStats());
+
+        // creating shop
+        $shop = Shop::getInstance();
+        $shop->addItem(new SewerMap());
+        $shop->addItem(new Cheese());
     }
 
     function save()
     {
         $player = $this->getPlayer();
-        $playerData = serialize($player);
+        $shop = Shop::getInstance();
+
+        $data = [
+            'player' => $player,
+            'shop' => $shop
+        ];
+
+        $serializedData = serialize($data);
+
         $fileName = readInput('Enter a name for your save: ');
         // check if folder exists
         if (!file_exists('saves')) {
             mkdir('saves');
         }
-        file_put_contents('saves/' . $fileName . '.sav', $playerData);
-        printLineWithBreak('Player saved');
+        file_put_contents('saves/' . $fileName . '.sav', $serializedData);
+        printLineWithBreak('Game saved');
     }
 
     function loadGame()
@@ -232,9 +240,10 @@ class Game
         $choice = $this->askChoice($choices, 1, count($choices), 'Choose a save:');
         $fileName = $choices[$choice - 1];
 
-        $playerData = file_get_contents('saves/' . $fileName);
-        $player = unserialize($playerData);
-        $this->setPlayer($player);
+        $serializedData = file_get_contents('saves/' . $fileName);
+        $data = unserialize($serializedData);
+        $this->setPlayer($data['player']);
+        Shop::setInstance($data['shop']);
         printLineWithBreak('Player loaded');
         printLines($this->getPlayer()->getStats());
         return true;
