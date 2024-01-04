@@ -10,7 +10,7 @@ class RatDancePartyInvitation extends Item
     public function __construct()
     {
         parent::__construct('✉️ Rat Dance Party Invitation', 5);
-        $this->setRate(10);
+        $this->setRate(50);
         $this->setRemoveOnUse(false);
     }
 
