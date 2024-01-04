@@ -12,6 +12,7 @@ class Player extends Entity
     private int $level;
     private bool $hasAccessToShop;
     private bool $hasAccessToSewer;
+    private bool $hasAccessToRatDanceParty;
 
 
     public function __construct(string $name, int $health, int $attack, int $defense)
@@ -24,6 +25,7 @@ class Player extends Entity
 
         $this->hasAccessToShop = true;
         $this->hasAccessToSewer = false;
+        $this->hasAccessToRatDanceParty = false;
 
         $this->moveset->addMove(new Attack($this));
         $this->moveset->addMove(new Defend($this));
@@ -105,6 +107,15 @@ class Player extends Entity
         return $actions;
     }
 
+    public function getFightActions(): array
+    {
+        $actions = [];
+        foreach ($this->moveset->getMoves() as $move) {
+            $actions[] = $move->getName();
+        }
+        return $actions;
+    }
+
     public function hasAccessToShop(): bool
     {
         return $this->hasAccessToShop;
@@ -123,6 +134,16 @@ class Player extends Entity
     public function setHasAccessToSewer(bool $hasAccessToSewer): void
     {
         $this->hasAccessToSewer = $hasAccessToSewer;
+    }
+
+    public function hasAccessToRatDanceParty(): bool
+    {
+        return $this->hasAccessToRatDanceParty;
+    }
+
+    public function setHasAccessToRatDanceParty(bool $hasAccessToRatDanceParty): void
+    {
+        $this->hasAccessToRatDanceParty = $hasAccessToRatDanceParty;
     }
 
     

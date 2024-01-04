@@ -55,6 +55,10 @@ class FightController extends Controller
 
             while ($playerChoice >= 4) {
                 // Player chooses an action
+                $playerActions = $player->getFightActions();
+
+
+
                 $playerChoice = Game::getInstance()->askChoice([
                     'Attack for ' . $player->getAttack() . ' damage',
                     'Defend for ' . ($player->getDefense() * 2) . ' damage',
