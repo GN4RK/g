@@ -134,7 +134,7 @@ class Game
 
             switch ($menuAction[$choice-1]) {
                 case 'Check stats':
-                    printLinesWithBreak($this->getPlayer()->getStats());
+                    printLines($this->getPlayer()->getStats());
                     break;
                 case 'Check inventory':
                     $this->inventory();
@@ -158,7 +158,7 @@ class Game
                     ]);
 
                     if ($choiceEncounter == 2) {
-                        printLineWithBreak('You ran away!');
+                        printLine('You ran away!');
                         break;
                     }
 
@@ -167,7 +167,7 @@ class Game
                     $fightController->startFight($fight);
                     break;
                 default:
-                    printLineWithBreak('Invalid choice');
+                    printLine('Invalid choice');
                     break;
             }
         }
@@ -193,7 +193,7 @@ class Game
         }
 
         printLineWithBreak('Your stats are valid');
-        printLinesWithBreak($this->getPlayer()->getStats());
+        printLines($this->getPlayer()->getStats());
     }
 
     function save()
@@ -236,7 +236,7 @@ class Game
         $player = unserialize($playerData);
         $this->setPlayer($player);
         printLineWithBreak('Player loaded');
-        printLinesWithBreak($this->getPlayer()->getStats());
+        printLines($this->getPlayer()->getStats());
         return true;
     }
 
@@ -263,9 +263,11 @@ class Game
             $choices[$i] = ($i + 1) . ': ' . $choices[$i];
         }
 
+        printLineWithBreak();
         printLines(array_merge([$prompt], $choices));
-
         $choice = readIntInput('> Your choice: ', $min, $max);
+        printLineWithBreak();
+        
         return $choice;
     }
 
@@ -283,7 +285,7 @@ class Game
     function inventory(): void
     {
         if ($this->getPlayer()->getInventory()->isEmpty()) {
-            printLineWithBreak('Your inventory is empty.');
+            printLine('Your inventory is empty.');
             return;
         }
 
@@ -373,14 +375,14 @@ class Game
         }
         $chosenItem = $items[$choice - 1];
         if ($this->getPlayer()->getGold() < $chosenItem->getPrice()) {
-            printLineWithBreak('You don\'t have enough gold');
+            printLine('You don\'t have enough gold');
             return;
         }
         $this->getPlayer()->setGold($this->getPlayer()->getGold() - $chosenItem->getPrice());
         $this->getPlayer()->getInventory()->addItem($chosenItem);
 
         $shop->removeItem($chosenItem);
-        printLineWithBreak('You bought a ' . $chosenItem->getName());
+        printLine('You bought a ' . $chosenItem->getName());
     }
 
         
