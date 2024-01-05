@@ -2,7 +2,7 @@
 
 namespace YoannLeonard\G\Controller;
 
-use YoannLeonard\G\Controller\Controller;
+use Exception;
 use YoannLeonard\G\Model\Entity\Player;
 use YoannLeonard\G\Model\Entity;
 use YoannLeonard\G\Model\Entity\Fight;
@@ -34,6 +34,9 @@ class FightController extends Controller
         return $fight;
     }
 
+    /**
+     * @throws Exception
+     */
     public function startFight(Fight $fight): void
     {
         $player = $fight->getPlayer();
@@ -51,36 +54,35 @@ class FightController extends Controller
             // display enemy action
             printLine($entity->getEntityName() . ' chose to ' . $enemyChoice);
 
-            $playerChoice = 4;
+            $playerChoice = 'Check stats';
 
-            while ($playerChoice >= 4) {
-                // Player chooses an action
-                $playerActions = $player->getFightActions();
+            $playerActions = $player->getFightActions();
 
+            while (str_contains($playerChoice, 'Check')) {
 
+                $playerChoiceInMenu = Game::getInstance()->askChoice($playerActions);
+                $playerChoice = $playerActions[$playerChoiceInMenu - 1];
 
-                $playerChoice = Game::getInstance()->askChoice([
-                    'Attack for ' . $player->getAttack() . ' damage',
-                    'Defend for ' . ($player->getDefense() * 2) . ' damage',
-                    'Run away',
-                    'View stats',
-                    'Check inventory'
-                ]);
-
-                if ($playerChoice == 1) {
-                    $player->chooseActionFromString('attack');
-                } elseif ($playerChoice == 2) {
-                    $player->chooseActionFromString('defend');
-                } elseif ($playerChoice == 3) {
-                    $player->chooseActionFromString('flee');
-                } elseif ($playerChoice == 4) {
-                    $player->displayStats();
-                } elseif ($playerChoice == 5) {
-                    if ($player->getInventory()->isEmpty()) {
-                        printLine('Your inventory is empty.');
-                        continue;
-                    }
-                    printLines($player->getInventory()->getItems());
+                switch($playerChoice) {
+                    case 'attack':
+                        $player->chooseActionFromString('attack');
+                        break;
+                    case 'defend':
+                        $player->chooseActionFromString('defend');
+                        break;
+                    case 'flee':
+                        $player->chooseActionFromString('flee');
+                        break;
+                    case 'Check stats':
+                        $player->displayStats();
+                        break;
+                    case 'Check inventory':
+                        if ($player->getInventory()->isEmpty()) {
+                            printLine('Your inventory is empty.');
+                            break;
+                        }
+                        printLines($player->getInventory()->getItems());
+                        break;
                 }
             }
 
