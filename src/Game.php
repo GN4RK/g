@@ -217,7 +217,7 @@ class Game
         printLineWithBreak('Game saved');
     }
 
-    function loadGame()
+    function loadGame(): bool
     {
         // check if folder exists
         if (!file_exists('saves')) {
