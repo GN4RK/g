@@ -171,7 +171,7 @@ class Game
         printLineWithBreak('Game over');
     }
 
-    function newGame()
+    function newGame(): void
     {
         $playerName = readInput('Enter your name: ');
         printLinesWithBreak([
@@ -196,7 +196,7 @@ class Game
         $shop->addItem(new Cheese());
     }
 
-    function save()
+    function save(): void
     {
         $player = $this->getPlayer();
         $shop = Shop::getInstance();
@@ -217,6 +217,9 @@ class Game
         printLineWithBreak('Game saved');
     }
 
+    /**
+     * @throws Exception
+     */
     function loadGame(): bool
     {
         // check if folder exists
@@ -249,6 +252,9 @@ class Game
         return true;
     }
 
+    /**
+     * @throws Exception
+     */
     function askChoice(array $choices, int $min = 1, int $max = 100, string $prompt = 'What do you want to do?'): int
     {
         if ($max == 100) {
@@ -291,6 +297,9 @@ class Game
 
     }
 
+    /**
+     * @throws Exception
+     */
     function inventory(): void
     {
         if ($this->getPlayer()->getInventory()->isEmpty()) {
@@ -369,6 +378,9 @@ class Game
         }
     }
 
+    /**
+     * @throws Exception
+     */
     function shop(): void
     {
         $shop = Shop::getInstance();
