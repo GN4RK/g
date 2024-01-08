@@ -64,4 +64,15 @@ class Shop
     {
         $this->items = array_values($this->items);
     }
+
+    function getMenuActions(): array
+    {
+        $actions = [];
+        $actions[] = 'Buy';
+        $actions[] = 'Sell';
+        $actions[] = 'Talk';
+        $actions[] = 'Leave';
+
+        return $actions;
+    }
 }
