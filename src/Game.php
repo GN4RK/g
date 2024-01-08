@@ -384,6 +384,41 @@ class Game
     function shop(): void
     {
         $shop = Shop::getInstance();
+
+        if ($shop->isEmpty()) {
+            printLine('The shop is empty.');
+            return;
+        }
+
+        $menuAction = $shop->getMenuActions();
+
+        $choice = $this->askChoice($menuAction);
+
+        switch ($menuAction[$choice-1]) {
+            case 'Buy':
+                $this->buy();
+                break;
+            case 'Sell':
+                $this->sell();
+                break;
+            case 'Talk':
+                printLine('The shopkeeper says: "Hello adventurer!"');
+                break;
+            case 'Back':
+                return;
+            default:
+                printLine('Invalid choice');
+                break;
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
+    function buy(): void
+    {
+        $shop = Shop::getInstance();
+
         $items = $shop->getItems();
         $choices = [];
         foreach ($items as $item) {
@@ -404,6 +439,31 @@ class Game
 
         $shop->removeItem($chosenItem);
         printLine('You bought a ' . $chosenItem->getName());
+    }
+
+    /**
+     * @throws Exception
+     */
+    function sell(): void
+    {
+        $shop = Shop::getInstance();
+
+        $items = $this->getPlayer()->getInventory()->getItems();
+        $choices = [];
+        foreach ($items as $item) {
+            $choices[] = $item->getName() . ' (' . $item->getPrice()/2 . ' gold)';
+        }
+        $choices[] = 'Back';
+        $choice = $this->askChoice($choices, 1, 100, 'You have ' . $this->getPlayer()->getGold() . ' gold. Choose an item:');
+        if ($choice == count($choices)) {
+            return;
+        }
+        $chosenItem = $items[$choice - 1];
+        $this->getPlayer()->setGold($this->getPlayer()->getGold() + $chosenItem->getPrice()/2);
+        $this->getPlayer()->getInventory()->removeItem($chosenItem);
+
+        $shop->addItem($chosenItem);
+        printLine('You sold a ' . $chosenItem->getName());
     }
 
         
