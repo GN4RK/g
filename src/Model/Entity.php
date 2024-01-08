@@ -4,45 +4,25 @@ namespace YoannLeonard\G\Model;
 
 use YoannLeonard\G\Model\Move\Attack;
 
-use function YoannLeonard\G\printLine;
 use function YoannLeonard\G\printLinesWithBreak;
 
 class Entity
 {
-    private $entityName;
-    private $name;
-    private $state;
-    private $status;
-    private $maxHealth;
-    private $health;
-    private $baseAttack;
-    private $attack;
-    private $baseDefense;
-    private $defense;
-    private $experience;
-    private $gold;
+    private string|false $entityName;
+    private string|false $name;
+    private string $state;
+    private string $status;
+    private int $maxHealth;
+    private int $health;
+    private int $baseAttack;
+    private int $attack;
+    private int $baseDefense;
+    private int $defense;
+    private int $experience;
+    private int $gold;
     private Move $move;
-    public $inventory;
-    public $moveset;
-
-    public const STATE = [
-        'neutral' => 1,
-        'attacking' => 2,
-        'defending' => 3,
-        'fleeing' => 4
-    ];
-
-    public const STATUS = [
-        'normal' => 1,
-        'poisoned' => 2,
-        'burned' => 3,
-        'paralyzed' => 4,
-        'asleep' => 5,
-        'frozen' => 6,
-        'confused' => 7,
-        'flee' => 8,
-        'dead' => 9
-    ];
+    public Inventory $inventory;
+    public Moveset $moveset;
 
     public function __construct(int $maxHealth, int $baseAttack, int $baseDefense)
     {
@@ -284,11 +264,6 @@ class Entity
     public function isDefending(): bool
     {
         return $this->getState() === 'defending';
-    }
-
-    public function display(): string
-    {
-        return $this->getName();
     }
 
     public function heal(int $heal): void
