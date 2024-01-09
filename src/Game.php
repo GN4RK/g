@@ -384,31 +384,27 @@ class Game
     function shop(): void
     {
         $shop = Shop::getInstance();
-
-        if ($shop->isEmpty()) {
-            printLine('The shop is empty.');
-            return;
-        }
-
         $menuAction = $shop->getMenuActions();
+        $choice = 1;
 
-        $choice = $this->askChoice($menuAction);
-
-        switch ($menuAction[$choice-1]) {
-            case 'Buy':
-                $this->buy();
-                break;
-            case 'Sell':
-                $this->sell();
-                break;
-            case 'Talk':
-                printLine('The shopkeeper says: "Hello adventurer!"');
-                break;
-            case 'Back':
-                return;
-            default:
-                printLine('Invalid choice');
-                break;
+        while ($menuAction[$choice-1] != 'Back'){
+            $choice = $this->askChoice($menuAction);
+            switch ($menuAction[$choice-1]) {
+                case 'Buy':
+                    $this->buy();
+                    break;
+                case 'Sell':
+                    $this->sell();
+                    break;
+                case 'Talk':
+                    printLine('The shopkeeper says: "Hello adventurer!"');
+                    break;
+                case 'Leave':
+                    return;
+                default:
+                    printLine('Invalid choice');
+                    break;
+            }
         }
     }
 
@@ -418,6 +414,11 @@ class Game
     function buy(): void
     {
         $shop = Shop::getInstance();
+
+        if ($shop->isEmpty()) {
+            printLine('The shop is empty.');
+            return;
+        }
 
         $items = $shop->getItems();
         $choices = [];
@@ -447,6 +448,11 @@ class Game
     function sell(): void
     {
         $shop = Shop::getInstance();
+
+        if ($this->getPlayer()->getInventory()->isEmpty()) {
+            printLine('Your inventory is empty.');
+            return;
+        }
 
         $items = $this->getPlayer()->getInventory()->getItems();
         $choices = [];
