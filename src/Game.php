@@ -95,7 +95,7 @@ class Game
      */
     public function start(): void
     {
-        printLineWithBreak('Welcome to the game');
+        printLineWithBreak("Welcome to the\033[31m Game\033[0m");
 
         $choice = $this->askChoice([
             'Start a new game',
@@ -279,7 +279,7 @@ class Game
         }
 
         printLineWithBreak();
-        printLines(array_merge([$prompt], $choices));
+        printLines(array_merge(["\033[32m" . $prompt . "\033[0m"], $choices));
         $choice = readIntInput('> Your choice: ', $min, $max);
         printLineWithBreak();
         
