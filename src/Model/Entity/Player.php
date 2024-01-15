@@ -77,16 +77,48 @@ class Player extends Entity
 
     public function getStats(): array
     {
-        return [
+        $stats = [
             "Player    : ". $this->getName(),
-            "Level     : $this->level",
-            "Health    : ".parent::getHealth() . "/" . parent::getMaxHealth(),
-            "Attack    : ".parent::getAttack() . "+" . parent::getAttack() - parent::getBaseAttack(),
-            "Defense   : ".parent::getBaseDefense() . "+" . parent::getDefense() - parent::getBaseDefense(),
-            "Status    : ".parent::getStatus(),
-            "Experience: ".parent::getExperience(),
-            "Gold      : ".parent::getGold(),
+            "Level     : $this->level"
         ];
+
+        if (parent::getHealth() == parent::getMaxHealth()) {
+            $stats[] = "Health    : [green]".parent::getHealth() . "/" . parent::getMaxHealth() . "[reset]";
+        }
+        if (parent::getHealth() < parent::getMaxHealth() && parent::getHealth() > parent::getMaxHealth() / 2) {
+            $stats[] = "Health    : [yellow]".parent::getHealth() . "/" . parent::getMaxHealth() . "[reset]";
+        }
+        if (parent::getHealth() <= parent::getMaxHealth() / 2) {
+            $stats[] = "Health    : [red]".parent::getHealth() . "/" . parent::getMaxHealth() . "[reset]";
+        }
+
+        $attackBonus = parent::getAttack() - parent::getBaseAttack();
+        if ($attackBonus == 0) {
+            $stats[] = "Attack    : ".parent::getAttack() . "[grey]+". $attackBonus . "[reset]";
+        }
+        if ($attackBonus > 0) {
+            $stats[] = "Attack    : ".parent::getAttack() . "[green]+". $attackBonus . "[reset]";
+        }
+        if ($attackBonus < 0) {
+            $stats[] = "Attack    : ".parent::getAttack() . "[red]-". $attackBonus . "[reset]";
+        }
+
+        $defenseBonus = parent::getDefense() - parent::getBaseDefense();
+        if ($defenseBonus == 0) {
+            $stats[] = "Defense   : ".parent::getDefense() . "[grey]+". $defenseBonus . "[reset]";
+        }
+        if ($defenseBonus > 0) {
+            $stats[] = "Defense   : ".parent::getDefense() . "[green]+". $defenseBonus . "[reset]";
+        }
+        if ($defenseBonus < 0) {
+            $stats[] = "Defense   : ".parent::getDefense() . "[red]-". $defenseBonus . "[reset]";
+        }
+
+        $stats[] = "Status    : ".parent::getStatus();
+        $stats[] = "Experience: ".parent::getExperience();
+        $stats[] = "Gold      : ".parent::getGold();
+
+        return $stats;
     }
 
     public function getMenuActions(): array
