@@ -95,7 +95,8 @@ class Game
      */
     public function start(): void
     {
-        printLineWithBreak("Welcome to the\033[31m Game\033[0m");
+        clearScreen();
+        printLineWithBreak("Welcome to the [yellow]Game[reset]!");
 
         $choice = $this->askChoice([
             'Start a new game',
@@ -279,7 +280,7 @@ class Game
         }
 
         printLineWithBreak();
-        printLines(array_merge(["\033[32m" . $prompt . "\033[0m"], $choices));
+        printLines(array_merge(["[green]" . $prompt . "[reset]"], $choices));
         $choice = readIntInput('> Your choice: ', $min, $max);
         printLineWithBreak();
         
@@ -360,7 +361,8 @@ class Game
         $choice = $this->askChoice([
             'Use',
             'View',
-            'Drop'
+            'Drop',
+            'Back'
         ]);
 
         switch ($choice) {
@@ -374,6 +376,11 @@ class Game
                 break;
             case 3:
                 $inventoryController->dropItem($this->getPlayer(), $chosenItem);
+                break;
+            case 4:
+                return;
+            default:
+                printLine('Invalid choice');
                 break;
         }
     }
