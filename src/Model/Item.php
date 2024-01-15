@@ -9,6 +9,7 @@ abstract class Item
     private int $price;
     private int $rate;
     private bool $removeOnUse = true;
+    private bool $isDroppable = true;
 
     public function __construct(string $name, int $price)
     {
@@ -75,6 +76,16 @@ abstract class Item
     public function getMessageOnUse(Entity $entity): string
     {
         return $entity->getName() . " used " . $this->getName();
+    }
+
+    public function isDroppable(): bool
+    {
+        return $this->isDroppable;
+    }
+
+    public function setIsDroppable(bool $isDroppable): void
+    {
+        $this->isDroppable = $isDroppable;
     }
 
     public function __toString() : string

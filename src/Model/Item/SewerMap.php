@@ -11,6 +11,8 @@ class SewerMap extends Item
     {
         parent::__construct('🗺️ Sewer Map', 8);
         $this->setRate(95);
+        $this->setRemoveOnUse(false);
+        $this->setIsDroppable(false);
     }
 
     public function use(Entity $entity): void
@@ -25,6 +27,6 @@ class SewerMap extends Item
 
     public function getMessageOnUse(Entity $entity): string
     {
-        return $entity->getName() . " used " . $this->getName() . " and now has access to the sewer";
+        return $entity->getName() . " used " . $this->getName() . " and now has access to [blue]the sewer[reset]!";
     }
 }
