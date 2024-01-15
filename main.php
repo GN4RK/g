@@ -47,6 +47,8 @@ function printLine(string $line = ''): void
     $line = str_replace('[magenta]', "\033[0;35m", $line);
     // cyan
     $line = str_replace('[cyan]', "\033[0;36m", $line);
+    //grey
+    $line = str_replace('[grey]', "\033[0;90m", $line);
     // reset
     $line = str_replace('[reset]', "\033[0m", $line);
     // bold
