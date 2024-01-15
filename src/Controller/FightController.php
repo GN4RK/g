@@ -8,6 +8,8 @@ use YoannLeonard\G\Model\Entity;
 use YoannLeonard\G\Model\Entity\Fight;
 use YoannLeonard\G\Game;
 
+use function YoannLeonard\G\clearScreen;
+use function YoannLeonard\G\pressEnterToContinue;
 use function YoannLeonard\G\printLine;
 use function YoannLeonard\G\printLines;
 use function YoannLeonard\G\printLineWithBreak;
@@ -41,8 +43,13 @@ class FightController extends Controller
     {
         $player = $fight->getPlayer();
         $entity = $fight->getEntity();
+        $entityController = EntityController::getInstance();
 
         while ($player->isAlive() && $entity->isAlive()) {
+            clearScreen();
+            // displaying entity
+            printLine($entityController->renderEntity($entity));
+
             printLine('Turn ' . $fight->getTurn() . ':');
             printLine($player->getName() . ' has ' . $player->getHealth() . ' health left.');
             printLine($entity->getEntityName() . ' has ' . $entity->getHealth() . ' health left.');
@@ -108,6 +115,7 @@ class FightController extends Controller
             $fight->incrementTurn();
             printLineWithBreak();
 
+            pressEnterToContinue();
             
         }
 
@@ -136,6 +144,8 @@ class FightController extends Controller
 
         $lootedItems = $inventoryController->lootItem($entity->getInventory());
         $inventoryController->addItems($lootedItems, $player->getInventory());
+
+        pressEnterToContinue();
         
     }
 

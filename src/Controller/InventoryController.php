@@ -38,6 +38,10 @@ class InventoryController extends Controller
      */
     public function dropItem(Entity $entity, Item $item): void
     {
+        if (!$item->isDroppable()) {
+            printLine("You can't drop this item");
+            return;
+        }
         $entity->getInventory()->removeItem($item);
         printLine($entity->getName() . " dropped " . $item->getName());
     }

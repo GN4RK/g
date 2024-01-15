@@ -34,6 +34,31 @@ function printText(string $string = ''): void
 
 function printLine(string $line = ''): void
 {
+    // replace color markers with ANSI escape sequences
+    // green
+    $line = str_replace('[green]', "\033[0;32m", $line);
+    // red
+    $line = str_replace('[red]', "\033[0;31m", $line);
+    // yellow
+    $line = str_replace('[yellow]', "\033[0;33m", $line);
+    // blue
+    $line = str_replace('[blue]', "\033[0;34m", $line);
+    // magenta
+    $line = str_replace('[magenta]', "\033[0;35m", $line);
+    // cyan
+    $line = str_replace('[cyan]', "\033[0;36m", $line);
+    //grey
+    $line = str_replace('[grey]', "\033[0;90m", $line);
+    // reset
+    $line = str_replace('[reset]', "\033[0m", $line);
+    // bold
+    $line = str_replace('[bold]', "\033[1m", $line);
+    // underline
+    $line = str_replace('[underline]', "\033[4m", $line);
+    // clear
+    $line = str_replace('[clear]', "\033[2J", $line);
+
+
     printText($line . PHP_EOL);
     usleep(10000);
 }
@@ -57,6 +82,17 @@ function printLinesWithBreak(array $lines = []): void
     printLines($lines);
     printLine("--");
     printLine();
+}
+
+function clearScreen(): void
+{
+    printLine('[clear]');
+}
+
+function pressEnterToContinue(): void
+{
+    printLine('Press enter to continue...');
+    readInput();
 }
 
 function main(): void
