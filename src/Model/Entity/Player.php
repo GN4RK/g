@@ -77,48 +77,60 @@ class Player extends Entity
 
     public function getStats(): array
     {
-        $stats = [
+        return [
             "Player    : ". $this->getName(),
-            "Level     : $this->level"
+            "Level     : $this->level",
+            $this->getHealthStatus(),
+            $this->getAttackStatus(),
+            $this->getDefenseStatus(),
+            "Status    : ".parent::getStatus(),
+            "Experience: ".parent::getExperience(),
+            "Gold      : ".parent::getGold()
         ];
-
-        if (parent::getHealth() == parent::getMaxHealth()) {
-            $stats[] = "Health    : [green]".parent::getHealth() . "/" . parent::getMaxHealth() . "[reset]";
+    }
+    
+    private function getHealthStatus(): string
+    {
+        $health = parent::getHealth();
+        $maxHealth = parent::getMaxHealth();
+    
+        if ($health == $maxHealth) {
+            return "Health    : [green]".$health . "/" . $maxHealth . "[reset]";
         }
-        if (parent::getHealth() < parent::getMaxHealth() && parent::getHealth() > parent::getMaxHealth() / 2) {
-            $stats[] = "Health    : [yellow]".parent::getHealth() . "/" . parent::getMaxHealth() . "[reset]";
+        if ($health < $maxHealth && $health > $maxHealth / 2) {
+            return "Health    : [yellow]".$health . "/" . $maxHealth . "[reset]";
         }
-        if (parent::getHealth() <= parent::getMaxHealth() / 2) {
-            $stats[] = "Health    : [red]".parent::getHealth() . "/" . parent::getMaxHealth() . "[reset]";
-        }
-
-        $attackBonus = parent::getAttack() - parent::getBaseAttack();
+        return "Health    : [red]".$health . "/" . $maxHealth . "[reset]";
+    }
+    
+    private function getAttackStatus(): string
+    {
+        $attack = parent::getAttack();
+        $baseAttack = parent::getBaseAttack();
+        $attackBonus = $attack - $baseAttack;
+    
         if ($attackBonus == 0) {
-            $stats[] = "Attack    : ".parent::getAttack() . "[grey]+". $attackBonus . "[reset]";
+            return "Attack    : ".$attack . "[grey]+". $attackBonus . "[reset]";
         }
         if ($attackBonus > 0) {
-            $stats[] = "Attack    : ".parent::getAttack() . "[green]+". $attackBonus . "[reset]";
+            return "Attack    : ".$attack . "[green]+". $attackBonus . "[reset]";
         }
-        if ($attackBonus < 0) {
-            $stats[] = "Attack    : ".parent::getAttack() . "[red]-". $attackBonus . "[reset]";
-        }
-
-        $defenseBonus = parent::getDefense() - parent::getBaseDefense();
+        return "Attack    : ".$attack . "[red]-". $attackBonus . "[reset]";
+    }
+    
+    private function getDefenseStatus(): string
+    {
+        $defense = parent::getDefense();
+        $baseDefense = parent::getBaseDefense();
+        $defenseBonus = $defense - $baseDefense;
+    
         if ($defenseBonus == 0) {
-            $stats[] = "Defense   : ".parent::getDefense() . "[grey]+". $defenseBonus . "[reset]";
+            return "Defense   : ".$defense . "[grey]+". $defenseBonus . "[reset]";
         }
         if ($defenseBonus > 0) {
-            $stats[] = "Defense   : ".parent::getDefense() . "[green]+". $defenseBonus . "[reset]";
+            return "Defense   : ".$defense . "[green]+". $defenseBonus . "[reset]";
         }
-        if ($defenseBonus < 0) {
-            $stats[] = "Defense   : ".parent::getDefense() . "[red]-". $defenseBonus . "[reset]";
-        }
-
-        $stats[] = "Status    : ".parent::getStatus();
-        $stats[] = "Experience: ".parent::getExperience();
-        $stats[] = "Gold      : ".parent::getGold();
-
-        return $stats;
+        return "Defense   : ".$defense . "[red]-". $defenseBonus . "[reset]";
     }
 
     public function getMenuActions(): array

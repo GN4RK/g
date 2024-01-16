@@ -88,7 +88,7 @@ class FightController extends Controller
                             printLine('Your inventory is empty.');
                             break;
                         }
-                        printLines($player->getInventory()->getItems());
+                        $this->getGame()->inventory();
                         break;
                 }
             }
