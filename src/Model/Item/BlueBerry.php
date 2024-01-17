@@ -1,0 +1,26 @@
+<?php
+
+namespace YoannLeonard\G\Model\Item;
+
+use YoannLeonard\G\Model\Entity;
+use YoannLeonard\G\Model\Item;
+
+class BlueBerry extends Item
+{
+    public function __construct()
+    {
+        parent::__construct('🧊 Blue Berry', 1);
+        $this->setRate(95);
+    }
+
+    public function use(Entity $entity): void
+    {
+        // boost attack
+        $entity->setAttack($entity->getDefense() + 1);
+    }
+
+    public function getMessageOnUse(Entity $entity): string
+    {
+        return $entity->getName() . " ate " . $this->getName() . " and gained 1 bonus defense point";
+    }
+}
