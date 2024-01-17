@@ -110,12 +110,12 @@ class Player extends Entity
         $attackBonus = $attack - $baseAttack;
     
         if ($attackBonus == 0) {
-            return "Attack    : ".$attack . "[grey]+". $attackBonus . "[reset]";
+            return "Attack    : ".$baseAttack . "[grey]+". $attackBonus . "[reset]";
         }
         if ($attackBonus > 0) {
-            return "Attack    : ".$attack . "[green]+". $attackBonus . "[reset]";
+            return "Attack    : ".$baseAttack . "[green]+". $attackBonus . "[reset]";
         }
-        return "Attack    : ".$attack . "[red]-". $attackBonus . "[reset]";
+        return "Attack    : ".$baseAttack . "[red]-". $attackBonus . "[reset]";
     }
     
     private function getDefenseStatus(): string
