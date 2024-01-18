@@ -15,8 +15,8 @@ class BlueBerry extends Item
 
     public function use(Entity $entity): void
     {
-        // boost attack
-        $entity->setAttack($entity->getDefense() + 1);
+        // boost defense
+        $entity->setDefense($entity->getDefense() + 1);
     }
 
     public function getMessageOnUse(Entity $entity): string
