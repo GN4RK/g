@@ -94,10 +94,10 @@ class Player extends Entity
         $health = parent::getHealth();
         $maxHealth = parent::getMaxHealth();
     
-        if ($health == $maxHealth) {
+        if ($health >= $maxHealth / 2) {
             return "Health    : [green]".$health . "/" . $maxHealth . "[reset]";
         }
-        if ($health < $maxHealth && $health > $maxHealth / 2) {
+        if ($health < $maxHealth && $health > $maxHealth / 4) {
             return "Health    : [yellow]".$health . "/" . $maxHealth . "[reset]";
         }
         return "Health    : [red]".$health . "/" . $maxHealth . "[reset]";
