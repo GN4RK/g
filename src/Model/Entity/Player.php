@@ -125,12 +125,12 @@ class Player extends Entity
         $defenseBonus = $defense - $baseDefense;
     
         if ($defenseBonus == 0) {
-            return "Defense   : ".$defense . "[grey]+". $defenseBonus . "[reset]";
+            return "Defense   : ".$baseDefense . "[grey]+". $defenseBonus . "[reset]";
         }
         if ($defenseBonus > 0) {
-            return "Defense   : ".$defense . "[green]+". $defenseBonus . "[reset]";
+            return "Defense   : ".$baseDefense . "[green]+". $defenseBonus . "[reset]";
         }
-        return "Defense   : ".$defense . "[red]-". $defenseBonus . "[reset]";
+        return "Defense   : ".$baseDefense . "[red]-". $defenseBonus . "[reset]";
     }
 
     public function getMenuActions(): array
