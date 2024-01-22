@@ -94,10 +94,10 @@ class Player extends Entity
         $health = parent::getHealth();
         $maxHealth = parent::getMaxHealth();
     
-        if ($health == $maxHealth) {
+        if ($health >= $maxHealth / 2) {
             return "Health    : [green]".$health . "/" . $maxHealth . "[reset]";
         }
-        if ($health < $maxHealth && $health > $maxHealth / 2) {
+        if ($health < $maxHealth && $health > $maxHealth / 4) {
             return "Health    : [yellow]".$health . "/" . $maxHealth . "[reset]";
         }
         return "Health    : [red]".$health . "/" . $maxHealth . "[reset]";
@@ -110,12 +110,12 @@ class Player extends Entity
         $attackBonus = $attack - $baseAttack;
     
         if ($attackBonus == 0) {
-            return "Attack    : ".$attack . "[grey]+". $attackBonus . "[reset]";
+            return "Attack    : ".$baseAttack . "[grey]+". $attackBonus . "[reset]";
         }
         if ($attackBonus > 0) {
-            return "Attack    : ".$attack . "[green]+". $attackBonus . "[reset]";
+            return "Attack    : ".$baseAttack . "[green]+". $attackBonus . "[reset]";
         }
-        return "Attack    : ".$attack . "[red]-". $attackBonus . "[reset]";
+        return "Attack    : ".$baseAttack . "[red]-". $attackBonus . "[reset]";
     }
     
     private function getDefenseStatus(): string
@@ -125,12 +125,12 @@ class Player extends Entity
         $defenseBonus = $defense - $baseDefense;
     
         if ($defenseBonus == 0) {
-            return "Defense   : ".$defense . "[grey]+". $defenseBonus . "[reset]";
+            return "Defense   : ".$baseDefense . "[grey]+". $defenseBonus . "[reset]";
         }
         if ($defenseBonus > 0) {
-            return "Defense   : ".$defense . "[green]+". $defenseBonus . "[reset]";
+            return "Defense   : ".$baseDefense . "[green]+". $defenseBonus . "[reset]";
         }
-        return "Defense   : ".$defense . "[red]-". $defenseBonus . "[reset]";
+        return "Defense   : ".$baseDefense . "[red]-". $defenseBonus . "[reset]";
     }
 
     public function getMenuActions(): array
