@@ -5,11 +5,11 @@ namespace YoannLeonard\G\Model\Item;
 use YoannLeonard\G\Model\Entity;
 use YoannLeonard\G\Model\Item;
 
-class BlueBerry extends Item
+class Myrtille extends Item
 {
     public function __construct()
     {
-        parent::__construct('🧊 Blue Berry', 1);
+        parent::__construct('🫐 Myrtille', 1);
         $this->setRate(95);
     }
 

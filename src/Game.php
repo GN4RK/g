@@ -10,7 +10,7 @@ use YoannLeonard\G\Controller\ItemController;
 use YoannLeonard\G\Model\Entity;
 use YoannLeonard\G\Model\Entity\Player;
 use YoannLeonard\G\Model\Entity\Rat;
-use YoannLeonard\G\Model\Item\BlueBerry;
+use YoannLeonard\G\Model\Item\Myrtille;
 use YoannLeonard\G\Model\Item\Cheese;
 use YoannLeonard\G\Model\Item\RedPepper;
 use YoannLeonard\G\Model\Item\SewerMap;
@@ -197,7 +197,7 @@ class Game
         $shop = Shop::getInstance();
         $shop->addItem(new SewerMap());
         $shop->addItem(new RedPepper());
-        $shop->addItem(new BlueBerry());
+        $shop->addItem(new Myrtille());
     }
 
     function save(): void
