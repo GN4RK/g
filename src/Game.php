@@ -21,6 +21,7 @@ class Game
 {
     private static ?Game $instance = null;
     private ?Player $player = null;
+    private string $lang = 'en_EN';
 
     private function __construct()
     {
@@ -49,9 +50,9 @@ class Game
         if ($playerName == 'test') {
             return new Player($playerName, 10, 5, 5);
         }
-        $health = readIntInput('Enter your health: ', 10, 18);
-        $attack = readIntInput('Enter your attack: ', 1, 9);
-        $defense = readIntInput('Enter your defense: ', 1, 9);
+        $health = readIntInput($this->translate('enter your health'), 10, 18);
+        $attack = readIntInput($this->translate('enter your attack'), 1, 9);
+        $defense = readIntInput($this->translate('enter your defense'), 1, 9);
 
         $player = new Player($playerName, $health, $attack, $defense);
 
@@ -98,11 +99,11 @@ class Game
     public function start(): void
     {
         clearScreen();
-        printLineWithBreak("Welcome to the [yellow]Game[reset]!");
+        printLineWithBreak($this->translate("welcome"));
 
         $choice = $this->askChoice([
-            'Start a new game',
-            'Load a game'
+            $this->translate('start a new game'),
+            $this->translate('load a saved game')
         ]);
 
         if ($choice == 1) {
@@ -176,7 +177,7 @@ class Game
 
     function newGame(): void
     {
-        $playerName = readInput('Enter your name: ');
+        $playerName = readInput($this->translate('enter your name'));
         printLinesWithBreak([
             "Hello $playerName",
             "You have 20 stat points to distribute between health, attack and defense.",
@@ -480,6 +481,12 @@ class Game
 
         $shop->addItem($chosenItem);
         printLine('You sold a ' . $chosenItem->getName());
+    }
+
+    function translate(string $key): string
+    {
+        $translations = include(__DIR__ . '/translations/' . $this->lang . '.php');
+        return $translations[$key];
     }
 
         
