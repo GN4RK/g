@@ -9,7 +9,7 @@ class Myrtille extends Item
 {
     public function __construct()
     {
-        parent::__construct('🫐 Myrtille', 1);
+        parent::__construct('🍇 Myrtille', 1);
         $this->setRate(95);
     }
 
