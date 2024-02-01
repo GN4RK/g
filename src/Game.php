@@ -11,7 +11,6 @@ use YoannLeonard\G\Model\Entity;
 use YoannLeonard\G\Model\Entity\Player;
 use YoannLeonard\G\Model\Entity\Rat;
 use YoannLeonard\G\Model\Item\Myrtille;
-use YoannLeonard\G\Model\Item\Cheese;
 use YoannLeonard\G\Model\Item\RedPepper;
 use YoannLeonard\G\Model\Item\SewerMap;
 use YoannLeonard\G\Model\Shop;
@@ -70,22 +69,22 @@ class Game
         $defense = $player->getDefense();
 
         if ($health < 10) {
-            printLine('Health can\'t be less than 10');
+            printLine($this->translate('health<10'));
             return false;
         }
 
         if ($attack < 1) {
-            printLine('Attack can\'t be less than 1');
+            printLine($this->translate('attack<1'));
             return false;
         }
 
         if ($defense < 1) {
-            printLine('Defense can\'t be less than 1');
+            printLine($this->translate('defense<1'));
             return false;
         }
 
         if ($health + $attack + $defense > 20) {
-            printLine('You can\'t have more than 20 points in total');
+            printLine($this->translate('points>20'));
             return false;
         }
 
@@ -171,18 +170,18 @@ class Game
             }
         }
 
-        printLineWithBreak('You died');
-        printLineWithBreak('Game over');
+        printLineWithBreak($this->translate('You died'));
+        printLineWithBreak($this->translate('Game over'));
     }
 
     function newGame(): void
     {
         $playerName = readInput($this->translate('enter your name'));
         printLinesWithBreak([
-            "Hello $playerName",
-            "You have 20 stat points to distribute between health, attack and defense.",
-            "Health can't be less than 10",
-            "You can't have less than 1 point in any stat."
+            $this->translate("Hello") . " " . $playerName,
+            $this->translate("You have 20 stat points to distribute between health, attack and defense."),
+            $this->translate("Health can't be less than 10"),
+            $this->translate("You can't have less than 1 point in any stat.")
         ]);
 
         $this->setPlayer($this->createPlayer($playerName));
@@ -191,7 +190,7 @@ class Game
             main();
         }
 
-        printLineWithBreak('Your stats are valid');
+        printLineWithBreak($this->translate('Your stats are valid'));
         printLines($this->getPlayer()->getStats());
 
         // creating shop
@@ -213,13 +212,13 @@ class Game
 
         $serializedData = serialize($data);
 
-        $fileName = readInput('Enter a name for your save: ');
+        $fileName = readInput($this->translate('Enter a name for your save: '));
         // check if folder exists
         if (!file_exists('saves')) {
             mkdir('saves');
         }
         file_put_contents('saves/' . $fileName . '.sav', $serializedData);
-        printLineWithBreak('Game saved');
+        printLineWithBreak($this->translate('Game saved'));
     }
 
     /**
@@ -233,7 +232,7 @@ class Game
         }
         $saves = scandir('saves');
         if (count($saves) == 2) {
-            printLineWithBreak('No save found');
+            printLineWithBreak($this->translate('No save found'));
             return false;
         }
 
@@ -245,14 +244,14 @@ class Game
             $choices[] = $save;
         }
 
-        $choice = $this->askChoice($choices, 1, count($choices), 'Choose a save:');
+        $choice = $this->askChoice($choices, 1, count($choices), $this->translate('Choose a save:'));
         $fileName = $choices[$choice - 1];
 
         $serializedData = file_get_contents('saves/' . $fileName);
         $data = unserialize($serializedData);
         $this->setPlayer($data['player']);
         Shop::setInstance($data['shop']);
-        printLineWithBreak('Player loaded');
+        printLineWithBreak($this->translate('Player loaded'));
         printLines($this->getPlayer()->getStats());
         return true;
     }
@@ -285,7 +284,7 @@ class Game
 
         printLineWithBreak();
         printLines(array_merge(["[green]" . $prompt . "[reset]"], $choices));
-        $choice = readIntInput('> Your choice: ', $min, $max);
+        $choice = readIntInput($this->translate('> Your choice: '), $min, $max);
         printLineWithBreak();
         
         return $choice;
@@ -308,7 +307,7 @@ class Game
     function inventory(): void
     {
         if ($this->getPlayer()->getInventory()->isEmpty()) {
-            printLine('Your inventory is empty.');
+            printLine($this->translate('Your inventory is empty.'));
             return;
         }
 
@@ -350,10 +349,10 @@ class Game
         }
 
         $choice = $this->askChoice(
-            array_merge($displayedItems, ['Back']),
+            array_merge($displayedItems, [$this->translate('Back')]),
             1,
             count($firstAndQuantity) + 1,
-            'Choose an item:'
+            $this->translate('Choose an item:')
         );
 
         if ($choice == count($firstAndQuantity) + 1) {
