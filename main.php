@@ -5,6 +5,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use YoannLeonard\G\Game;
 
+define('LANG', 'en_EN'); // default language (english)
+
 function readInput(string $prompt = ''): string
 {
     printText($prompt);
@@ -15,11 +17,11 @@ function readIntInput(string $prompt = '', int $min = 0, int $max = 100): int
 {
     $input = readInput($prompt);
     if (!is_numeric($input)) {
-        printLine('Please enter a valid integer');
+        printLine(translate('Please enter a valid integer'));
         return readIntInput($prompt, $min, $max);
     }
     if ($input < $min || $input > $max) {
-        printLine('Please enter a valid integer between ' . $min . ' and ' . $max);
+        printLine(translate('Please enter a valid integer between ') . $min . " " . translate('and') . " " . $max);
         return readIntInput($prompt, $min, $max);
     }
     return (int)$input;
@@ -91,7 +93,7 @@ function clearScreen(): void
 
 function pressEnterToContinue(): void
 {
-    printLine('Press enter to continue...');
+    printLine(translate('Press enter to continue...'));
     readInput();
 }
 
@@ -99,6 +101,11 @@ function main(): void
 {
     $game = Game::getInstance();
     $game->start();
+}
+function translate(string $key): string
+{
+    $translations = include(__DIR__ . '/src/translations/' . LANG . '.php');
+    return $translations[$key];
 }
 
 main();

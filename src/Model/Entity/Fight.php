@@ -4,6 +4,7 @@ namespace YoannLeonard\G\Model\Entity;
 
 use YoannLeonard\G\Model\Entity;
 use YoannLeonard\G\Model\Entity\Player;
+use function YoannLeonard\G\translate;
 
 class Fight
 {
@@ -47,6 +48,7 @@ class Fight
 
     public function __toString(): string
     {
-        return 'Fight ' . $this->id . ' : ' . $this->player->getName() . ' vs ' . $this->entity->getEntityName();
+        return translate('Fight') . " " . $this->id . ' : ' . $this->player->getName() . " " .
+            translate('vs') . " " . $this->entity->getEntityName();
     }
 }

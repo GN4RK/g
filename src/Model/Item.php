@@ -2,6 +2,8 @@
 
 namespace YoannLeonard\G\Model;
 
+use function YoannLeonard\G\translate;
+
 abstract class Item
 {
     private string $itemName;
@@ -75,7 +77,7 @@ abstract class Item
 
     public function getMessageOnUse(Entity $entity): string
     {
-        return $entity->getName() . " used " . $this->getName();
+        return $entity->getName() . ' ' . translate('used') . ' ' . $this->getName();
     }
 
     public function isDroppable(): bool
@@ -95,7 +97,7 @@ abstract class Item
 
     /**
      * @param Entity $entity The user
-     * @return string[]
+     * @return void
      */
     abstract public function use(Entity $entity): void;
 }

@@ -4,22 +4,26 @@ namespace YoannLeonard\G\Model\Item;
 
 use YoannLeonard\G\Model\Entity;
 use YoannLeonard\G\Model\Item;
+use function YoannLeonard\G\translate;
 
 class Cheese extends Item
 {
+    private int $healPower;
     public function __construct()
     {
-        parent::__construct('🧀 Cheese', 5);
+        parent::__construct('🧀 ' . translate('Cheese'), 5);
         $this->setRate(95);
+        $this->healPower = 5;
     }
 
     public function use(Entity $entity): void
     {
-        $entity->heal(5);
+        $entity->heal($this->healPower);
     }
 
     public function getMessageOnUse(Entity $entity): string
     {
-        return $entity->getName() . " ate " . $this->getName() . " and healed 5 HP";
+        return $entity->getName() . " " . translate('ate') . " " . $this->getName() . " " .
+            translate("and") . " " . translate('healed') . $this->healPower . translate("HP");
     }
 }

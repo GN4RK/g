@@ -49,9 +49,9 @@ class Game
         if ($playerName == 'test') {
             return new Player($playerName, 10, 5, 5);
         }
-        $health = readIntInput($this->translate('enter your health'), 10, 18);
-        $attack = readIntInput($this->translate('enter your attack'), 1, 9);
-        $defense = readIntInput($this->translate('enter your defense'), 1, 9);
+        $health = readIntInput(translate('enter your health'), 10, 18);
+        $attack = readIntInput(translate('enter your attack'), 1, 9);
+        $defense = readIntInput(translate('enter your defense'), 1, 9);
 
         $player = new Player($playerName, $health, $attack, $defense);
 
@@ -69,22 +69,22 @@ class Game
         $defense = $player->getDefense();
 
         if ($health < 10) {
-            printLine($this->translate('health<10'));
+            printLine(translate('health<10'));
             return false;
         }
 
         if ($attack < 1) {
-            printLine($this->translate('attack<1'));
+            printLine(translate('attack<1'));
             return false;
         }
 
         if ($defense < 1) {
-            printLine($this->translate('defense<1'));
+            printLine(translate('defense<1'));
             return false;
         }
 
         if ($health + $attack + $defense > 20) {
-            printLine($this->translate('points>20'));
+            printLine(translate('points>20'));
             return false;
         }
 
@@ -98,11 +98,11 @@ class Game
     public function start(): void
     {
         clearScreen();
-        printLineWithBreak($this->translate("welcome"));
+        printLineWithBreak(translate("welcome"));
 
         $choice = $this->askChoice([
-            $this->translate('start a new game'),
-            $this->translate('load a saved game')
+            translate('start a new game'),
+            translate('load a saved game')
         ]);
 
         if ($choice == 1) {
@@ -131,57 +131,63 @@ class Game
             $choice = $this->askChoice($menuAction);
 
             switch ($menuAction[$choice-1]) {
-                case 'Check stats':
+                case translate('Check stats'):
                     printLines($this->getPlayer()->getStats());
                     break;
-                case 'Check inventory':
+                case translate('Check inventory'):
                     $this->inventory();
                     break;
-                case 'Save and quit':
+                case translate('Save and quit'):
                     $this->save();
                     exit;
-                case 'Go to the shop':
+                case translate('Go to the shop'):
                     $this->shop();
                     break;
-                case 'Go to the sewer':
-                    printLineWithBreak('Searching for combat...');
+                case translate('Go to the sewer'):
+                    printLineWithBreak(translate('Searching for combat...'));
                     
                     $enemy = $this->randomEnemy();
-                    printLineWithBreak('You found a ' . $enemy->getEntityName() . '!');
+                    printLineWithBreak(translate('You found a ') . $enemy->getEntityName() . '!');
                     printLine($entityController->renderEntity($enemy));
 
                     $choiceEncounter = $this->askChoice([
-                        'Fight',
-                        'Run away'
+                        translate('Fight'),
+                        translate('Run away')
                     ]);
 
                     if ($choiceEncounter == 2) {
-                        printLine('You ran away!');
+                        printLine(translate('You ran away!'));
                         break;
                     }
 
                     $fight = $fightController->createFight($this->getPlayer(), $enemy);
-                    printLineWithBreak('A fight has started between ' . $fight->getPlayer()->getName() . ' and ' . $fight->getEntity()->getEntityName() . '!');
+                    printLineWithBreak(
+                        translate('A fight has started between ') .
+                        $fight->getPlayer()->getName() .
+                        translate(' and ') .
+                        $fight->getEntity()->getEntityName() .
+                        '!'
+                    );
                     $fightController->startFight($fight);
                     break;
                 default:
-                    printLine('Invalid choice');
+                    printLine(translate('Invalid choice'));
                     break;
             }
         }
 
-        printLineWithBreak($this->translate('You died'));
-        printLineWithBreak($this->translate('Game over'));
+        printLineWithBreak(translate('You died'));
+        printLineWithBreak(translate('Game over'));
     }
 
     function newGame(): void
     {
-        $playerName = readInput($this->translate('enter your name'));
+        $playerName = readInput(translate('enter your name'));
         printLinesWithBreak([
-            $this->translate("Hello") . " " . $playerName,
-            $this->translate("You have 20 stat points to distribute between health, attack and defense."),
-            $this->translate("Health can't be less than 10"),
-            $this->translate("You can't have less than 1 point in any stat.")
+            translate("Hello") . " " . $playerName,
+            translate("You have 20 stat points to distribute between health, attack and defense."),
+            translate("Health can't be less than 10"),
+            translate("You can't have less than 1 point in any stat.")
         ]);
 
         $this->setPlayer($this->createPlayer($playerName));
@@ -190,7 +196,7 @@ class Game
             main();
         }
 
-        printLineWithBreak($this->translate('Your stats are valid'));
+        printLineWithBreak(translate('Your stats are valid'));
         printLines($this->getPlayer()->getStats());
 
         // creating shop
@@ -212,13 +218,13 @@ class Game
 
         $serializedData = serialize($data);
 
-        $fileName = readInput($this->translate('Enter a name for your save: '));
+        $fileName = readInput(translate('Enter a name for your save: '));
         // check if folder exists
         if (!file_exists('saves')) {
             mkdir('saves');
         }
         file_put_contents('saves/' . $fileName . '.sav', $serializedData);
-        printLineWithBreak($this->translate('Game saved'));
+        printLineWithBreak(translate('Game saved'));
     }
 
     /**
@@ -232,7 +238,7 @@ class Game
         }
         $saves = scandir('saves');
         if (count($saves) == 2) {
-            printLineWithBreak($this->translate('No save found'));
+            printLineWithBreak(translate('No save found'));
             return false;
         }
 
@@ -244,14 +250,14 @@ class Game
             $choices[] = $save;
         }
 
-        $choice = $this->askChoice($choices, 1, count($choices), $this->translate('Choose a save:'));
+        $choice = $this->askChoice($choices, 1, count($choices), translate('Choose a save:'));
         $fileName = $choices[$choice - 1];
 
         $serializedData = file_get_contents('saves/' . $fileName);
         $data = unserialize($serializedData);
         $this->setPlayer($data['player']);
         Shop::setInstance($data['shop']);
-        printLineWithBreak($this->translate('Player loaded'));
+        printLineWithBreak(translate('Player loaded'));
         printLines($this->getPlayer()->getStats());
         return true;
     }
@@ -284,7 +290,7 @@ class Game
 
         printLineWithBreak();
         printLines(array_merge(["[green]" . $prompt . "[reset]"], $choices));
-        $choice = readIntInput($this->translate('> Your choice: '), $min, $max);
+        $choice = readIntInput(translate('> Your choice: '), $min, $max);
         printLineWithBreak();
         
         return $choice;
@@ -307,7 +313,7 @@ class Game
     function inventory(): void
     {
         if ($this->getPlayer()->getInventory()->isEmpty()) {
-            printLine($this->translate('Your inventory is empty.'));
+            printLine(translate('Your inventory is empty.'));
             return;
         }
 
@@ -349,10 +355,10 @@ class Game
         }
 
         $choice = $this->askChoice(
-            array_merge($displayedItems, [$this->translate('Back')]),
+            array_merge($displayedItems, [translate('Back')]),
             1,
             count($firstAndQuantity) + 1,
-            $this->translate('Choose an item:')
+            translate('Choose an item:')
         );
 
         if ($choice == count($firstAndQuantity) + 1) {
@@ -362,10 +368,10 @@ class Game
         $chosenItem = $firstAndQuantity[$choice - 1][0];
 
         $choice = $this->askChoice([
-            'Use',
-            'View',
-            'Drop',
-            'Back'
+            translate('Use'),
+            translate('View'),
+            translate('Drop'),
+            translate('Back')
         ]);
 
         switch ($choice) {
@@ -383,7 +389,7 @@ class Game
             case 4:
                 return;
             default:
-                printLine('Invalid choice');
+                printLine(translate('Invalid choice'));
                 break;
         }
     }
@@ -397,22 +403,22 @@ class Game
         $menuAction = $shop->getMenuActions();
         $choice = 1;
 
-        while ($menuAction[$choice-1] != 'Back'){
+        while ($menuAction[$choice-1] != translate('Back')) {
             $choice = $this->askChoice($menuAction);
             switch ($menuAction[$choice-1]) {
-                case 'Buy':
+                case translate('Buy'):
                     $this->buy();
                     break;
-                case 'Sell':
+                case translate('Sell'):
                     $this->sell();
                     break;
-                case 'Talk':
-                    printLine('The shopkeeper says: "Hello adventurer!"');
+                case translate('Talk'):
+                    printLine(translate('The shopkeeper says: "Hello adventurer!"'));
                     break;
-                case 'Leave':
+                case translate('Leave'):
                     return;
                 default:
-                    printLine('Invalid choice');
+                    printLine(translate('Invalid choice'));
                     break;
             }
         }
@@ -426,30 +432,37 @@ class Game
         $shop = Shop::getInstance();
 
         if ($shop->isEmpty()) {
-            printLine('The shop is empty.');
+            printLine(translate('The shop is empty.'));
             return;
         }
 
         $items = $shop->getItems();
         $choices = [];
         foreach ($items as $item) {
-            $choices[] = $item->getName() . ' (' . $item->getPrice() . ' gold)';
+            $choices[] = $item->getName() . ' (' . $item->getPrice() . ' ' . translate('gold') . ')';
         }
-        $choices[] = 'Back';
-        $choice = $this->askChoice($choices, 1, 100, 'You have ' . $this->getPlayer()->getGold() . ' gold. Choose an item:');
+        $choices[] = translate('Back');
+        $choice = $this->askChoice(
+            $choices,
+            1,
+            100,
+            translate('You have ') .
+                $this->getPlayer()->getGold() .
+                ' ' . translate('gold') . '. '. translate('Choose an item:')
+        );
         if ($choice == count($choices)) {
             return;
         }
         $chosenItem = $items[$choice - 1];
         if ($this->getPlayer()->getGold() < $chosenItem->getPrice()) {
-            printLine('You don\'t have enough gold');
+            printLine(translate("You don't have enough gold"));
             return;
         }
         $this->getPlayer()->setGold($this->getPlayer()->getGold() - $chosenItem->getPrice());
         $this->getPlayer()->getInventory()->addItem($chosenItem);
 
         $shop->removeItem($chosenItem);
-        printLine('You bought a ' . $chosenItem->getName());
+        printLine(translate('You bought a ') . $chosenItem->getName());
     }
 
     /**
@@ -460,17 +473,19 @@ class Game
         $shop = Shop::getInstance();
 
         if ($this->getPlayer()->getInventory()->isEmpty()) {
-            printLine('Your inventory is empty.');
+            printLine(translate('Your inventory is empty.'));
             return;
         }
 
         $items = $this->getPlayer()->getInventory()->getItems();
         $choices = [];
         foreach ($items as $item) {
-            $choices[] = $item->getName() . ' (' . $item->getPrice()/2 . ' gold)';
+            $choices[] = $item->getName() . ' (' . $item->getPrice()/2 . ' ' . translate('gold') . ')';
         }
-        $choices[] = 'Back';
-        $choice = $this->askChoice($choices, 1, 100, 'You have ' . $this->getPlayer()->getGold() . ' gold. Choose an item:');
+        $choices[] = translate('Back');
+        $choice = $this->askChoice($choices, 1, 100, translate('You have ') .
+            $this->getPlayer()->getGold() .
+            ' ' . translate('gold') . '. '. translate('Choose an item:'));
         if ($choice == count($choices)) {
             return;
         }
@@ -479,14 +494,6 @@ class Game
         $this->getPlayer()->getInventory()->removeItem($chosenItem);
 
         $shop->addItem($chosenItem);
-        printLine('You sold a ' . $chosenItem->getName());
+        printLine(translate('You sold a ') . $chosenItem->getName());
     }
-
-    function translate(string $key): string
-    {
-        $translations = include(__DIR__ . '/translations/' . $this->lang . '.php');
-        return $translations[$key];
-    }
-
-        
 }

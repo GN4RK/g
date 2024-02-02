@@ -6,6 +6,7 @@ use YoannLeonard\G\Model\Entity;
 use YoannLeonard\G\Model\Move\Attack;
 use YoannLeonard\G\Model\Move\Defend;
 use YoannLeonard\G\Model\Move\Flee;
+use function YoannLeonard\G\translate;
 
 class Player extends Entity
 {
@@ -78,14 +79,14 @@ class Player extends Entity
     public function getStats(): array
     {
         return [
-            "Player    : ". $this->getName(),
-            "Level     : $this->level",
+            translate("Player    : "). $this->getName(),
+            translate("Level     : "). $this->level,
             $this->getHealthStatus(),
             $this->getAttackStatus(),
             $this->getDefenseStatus(),
-            "Status    : ".parent::getStatus(),
-            "Experience: ".parent::getExperience(),
-            "Gold      : ".parent::getGold()
+            translate("Status    : ").parent::getStatus(),
+            translate("Experience: ").parent::getExperience(),
+            translate("Gold      : ").parent::getGold()
         ];
     }
     
@@ -95,12 +96,12 @@ class Player extends Entity
         $maxHealth = parent::getMaxHealth();
     
         if ($health >= $maxHealth / 2) {
-            return "Health    : [green]".$health . "/" . $maxHealth . "[reset]";
+            return translate("Health    : ") . "[green]".$health . "/" . $maxHealth . "[reset]";
         }
         if ($health < $maxHealth && $health > $maxHealth / 4) {
-            return "Health    : [yellow]".$health . "/" . $maxHealth . "[reset]";
+            return translate("Health    : ") . "[yellow]".$health . "/" . $maxHealth . "[reset]";
         }
-        return "Health    : [red]".$health . "/" . $maxHealth . "[reset]";
+        return translate("Health    : ") . "[red]".$health . "/" . $maxHealth . "[reset]";
     }
     
     private function getAttackStatus(): string
@@ -110,12 +111,12 @@ class Player extends Entity
         $attackBonus = $attack - $baseAttack;
     
         if ($attackBonus == 0) {
-            return "Attack    : ".$baseAttack . "[grey]+". $attackBonus . "[reset]";
+            return translate("Attack    : ") . $baseAttack . "[grey]+" . $attackBonus . "[reset]";
         }
         if ($attackBonus > 0) {
-            return "Attack    : ".$baseAttack . "[green]+". $attackBonus . "[reset]";
+            return translate("Attack    : ") . $baseAttack . "[green]+" . $attackBonus . "[reset]";
         }
-        return "Attack    : ".$baseAttack . "[red]-". $attackBonus . "[reset]";
+        return translate("Attack    : ") . $baseAttack . "[red]-" . $attackBonus . "[reset]";
     }
     
     private function getDefenseStatus(): string
@@ -125,28 +126,28 @@ class Player extends Entity
         $defenseBonus = $defense - $baseDefense;
     
         if ($defenseBonus == 0) {
-            return "Defense   : ".$baseDefense . "[grey]+". $defenseBonus . "[reset]";
+            return translate("Defense   : ") . $baseDefense . "[grey]+" . $defenseBonus . "[reset]";
         }
         if ($defenseBonus > 0) {
-            return "Defense   : ".$baseDefense . "[green]+". $defenseBonus . "[reset]";
+            return translate("Defense   : ") . $baseDefense . "[green]+" . $defenseBonus . "[reset]";
         }
-        return "Defense   : ".$baseDefense . "[red]-". $defenseBonus . "[reset]";
+        return translate("Defense   : ") . $baseDefense . "[red]-" . $defenseBonus . "[reset]";
     }
 
     public function getMenuActions(): array
     {
         $actions = [
-            'Check stats',
-            'Check inventory',
-            'Save and quit',
+            translate('Check stats'),
+            translate('Check inventory'),
+            translate('Save and quit'),
         ];
 
         if ($this->hasAccessToShop()) {
-            $actions[] = 'Go to the shop';
+            $actions[] = translate('Go to the shop');
         }
 
         if ($this->hasAccessToSewer()) {
-            $actions[] = 'Go to the sewer';
+            $actions[] = translate('Go to the sewer');
         }
         return $actions;
     }
@@ -158,8 +159,8 @@ class Player extends Entity
             $actions[] = $move["move"]->getName();
         }
 
-        $actions[] = 'Check stats';
-        $actions[] = 'Check inventory';
+        $actions[] = translate('Check stats');
+        $actions[] = translate('Check inventory');
 
         return $actions;
     }

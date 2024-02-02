@@ -3,6 +3,7 @@
 namespace YoannLeonard\G\Model;
 
 use YoannLeonard\G\Model\Item;
+use function YoannLeonard\G\translate;
 
 // singleton class
 
@@ -68,10 +69,10 @@ class Shop
     function getMenuActions(): array
     {
         $actions = [];
-        $actions[] = 'Buy';
-        $actions[] = 'Sell';
-        $actions[] = 'Talk';
-        $actions[] = 'Leave';
+        $actions[] = translate('Buy');
+        $actions[] = translate('Sell');
+        $actions[] = translate('Talk');
+        $actions[] = translate('Leave');
 
         return $actions;
     }
