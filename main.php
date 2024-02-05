@@ -5,7 +5,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use YoannLeonard\G\Game;
 
-define('LANG', 'en_EN'); // default language (english)
+//define('LANG', 'en_EN'); // default language (english)
+define('LANG', 'fr_FR');
 
 function readInput(string $prompt = ''): string
 {

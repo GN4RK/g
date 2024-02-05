@@ -2,6 +2,7 @@
 
 return [
     'welcome' => 'Welcome to the [yellow]Game[reset]!',
+    'What do you want to do?' => 'What do you want to do?',
     'start a new game' => 'Start a new game',
     'load a saved game' => 'Load a saved game',
     'enter your name' => 'Enter your name: ',
@@ -80,7 +81,20 @@ return [
     'and gained 1 bonus attack point' => 'and gained 1 bonus attack point',
     'Sewer Map' => 'Sewer Map',
     'and now has access to the sewer!' => 'and now has access to [blue]the sewer[reset]!',
+    "%entity%'s defense is boosted" => "%entity%'s defense is boosted",
 
+    'Turn' => 'Turn',
+    'has' => 'has',
+    'health left.' => 'health left.',
+    'chose to' => 'chose to',
+    'Check' => 'Check',
+    'attack' => 'attack',
+    'defend' => 'defend',
+    'flee' => 'flee',
+    'won the fight!' => 'won the fight!',
+    'gained' => 'gained',
+    'experience' => 'experience',
+    'gained a level!' => 'gained a level!',
 
 
 ];

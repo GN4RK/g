@@ -164,7 +164,7 @@ class Game
                     printLineWithBreak(
                         translate('A fight has started between ') .
                         $fight->getPlayer()->getName() .
-                        translate(' and ') .
+                        ' ' . translate('and') . ' ' .
                         $fight->getEntity()->getEntityName() .
                         '!'
                     );
@@ -265,7 +265,7 @@ class Game
     /**
      * @throws Exception
      */
-    function askChoice(array $choices, int $min = 1, int $max = 100, string $prompt = 'What do you want to do?'): int
+    function askChoice(array $choices, int $min = 1, int $max = 100, string $prompt = null): int
     {
         if ($max == 100) {
             $max = count($choices);
@@ -286,6 +286,10 @@ class Game
         // add number to choices
         for ($i = 0; $i < count($choices); $i++) {
             $choices[$i] = ($i + 1) . ': ' . $choices[$i];
+        }
+
+        if ($prompt == null) {
+            $prompt = translate('What do you want to do?');
         }
 
         printLineWithBreak();

@@ -156,7 +156,7 @@ class Player extends Entity
     {
         $actions = [];
         foreach ($this->moveset->getMoves() as $move) {
-            $actions[] = $move["move"]->getName();
+            $actions[] = translate($move["move"]->getName());
         }
 
         $actions[] = translate('Check stats');

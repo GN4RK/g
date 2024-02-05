@@ -6,6 +6,7 @@ use YoannLeonard\G\Model\Entity;
 use YoannLeonard\G\Model\Move;
 
 use function YoannLeonard\G\printLine;
+use function YoannLeonard\G\translate;
 
 class Defend extends Move
 {
@@ -17,7 +18,9 @@ class Defend extends Move
     public function getBonus(): bool
     {
         parent::getEntity()->setDefense(parent::getEntity()->getBaseDefense() * 2);
-        printLine(parent::getEntity()->getName() . '\'s defense is boosted.');
+        $message = translate("%entity%'s defense is boosted");
+        $message = str_replace('%entity%', parent::getEntity()->getName(), $message);
+        printLine($message);
         return true;
     }
 }
