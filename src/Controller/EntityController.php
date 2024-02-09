@@ -14,7 +14,7 @@ class EntityController extends Controller
     public static function getInstance(): EntityController
     {
         if (self::$instance === null) {
-            self::$instance = new EntityController(Game::getInstance());
+            self::$instance = new EntityController();
         }
         return self::$instance;
     }

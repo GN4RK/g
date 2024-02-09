@@ -11,7 +11,6 @@ use YoannLeonard\G\Game;
 use function YoannLeonard\G\clearScreen;
 use function YoannLeonard\G\pressEnterToContinue;
 use function YoannLeonard\G\printLine;
-use function YoannLeonard\G\printLines;
 use function YoannLeonard\G\printLineWithBreak;
 use function YoannLeonard\G\translate;
 
@@ -25,7 +24,7 @@ class FightController extends Controller
     public static function getInstance(): FightController
     {
         if (self::$instance === null) {
-            self::$instance = new FightController(Game::getInstance());
+            self::$instance = new FightController();
         }
         return self::$instance;
     }
@@ -44,7 +43,6 @@ class FightController extends Controller
     {
         $player = $fight->getPlayer();
         $entity = $fight->getEntity();
-        $entityController = EntityController::getInstance();
 
         while ($player->isAlive() && $entity->isAlive()) {
             clearScreen();

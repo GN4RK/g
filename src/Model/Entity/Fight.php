@@ -3,7 +3,6 @@
 namespace YoannLeonard\G\Model\Entity;
 
 use YoannLeonard\G\Model\Entity;
-use YoannLeonard\G\Model\Entity\Player;
 use function YoannLeonard\G\translate;
 
 class Fight

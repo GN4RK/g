@@ -2,7 +2,6 @@
 
 namespace YoannLeonard\G\Controller;
 
-use YoannLeonard\G\Game;
 use YoannLeonard\G\Model\Item;
 
 class ItemController extends Controller
@@ -12,7 +11,7 @@ class ItemController extends Controller
     public static function getInstance(): ItemController
     {
         if (self::$instance === null) {
-            self::$instance = new ItemController(Game::getInstance());
+            self::$instance = new ItemController();
         }
         return self::$instance;
     }

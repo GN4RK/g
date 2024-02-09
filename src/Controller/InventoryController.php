@@ -19,7 +19,7 @@ class InventoryController extends Controller
     public static function getInstance(): InventoryController
     {
         if (self::$instance === null) {
-            self::$instance = new InventoryController(Game::getInstance());
+            self::$instance = new InventoryController();
         }
         return self::$instance;
     }
@@ -27,6 +27,7 @@ class InventoryController extends Controller
     /**
      * @param Entity $entity
      * @param Item $item
+     * @return string
      */
     public function useItem(Entity $entity, Item $item): string
     {
@@ -53,7 +54,6 @@ class InventoryController extends Controller
      */
     public function lootItem(Inventory $inventory): array
     {
-        $itemController = ItemController::getInstance();
         $lootedItem = [];
 
         foreach ($inventory->getItems() as $item) {

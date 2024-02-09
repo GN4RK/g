@@ -2,7 +2,6 @@
 
 namespace YoannLeonard\G\Model;
 
-use YoannLeonard\G\Model\Item;
 use function YoannLeonard\G\translate;
 
 // singleton class

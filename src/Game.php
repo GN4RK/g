@@ -20,8 +20,6 @@ class Game
 {
     private static ?Game $instance = null;
     private ?Player $player = null;
-    private string $lang = 'en_EN';
-
     private function __construct()
     {
     }

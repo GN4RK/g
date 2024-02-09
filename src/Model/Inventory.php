@@ -2,11 +2,9 @@
 
 namespace YoannLeonard\G\Model;
 
-use PHPUnit\Framework\Constraint\IsEmpty;
-
 class Inventory
 {
-    private $items;
+    private array $items;
 
     public function __construct()
     {
