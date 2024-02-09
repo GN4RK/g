@@ -96,5 +96,10 @@ return [
     'experience' => 'experience',
     'gained a level!' => 'gained a level!',
 
+    'You looted' => 'You looted',
+    'You can\'t drop this item' => 'You can\'t drop this item',
+    'dropped' => 'dropped',
+
+
 
 ];
