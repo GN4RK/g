@@ -11,8 +11,8 @@ use YoannLeonard\G\Game;
 use function YoannLeonard\G\clearScreen;
 use function YoannLeonard\G\pressEnterToContinue;
 use function YoannLeonard\G\printLine;
-use function YoannLeonard\G\printLines;
 use function YoannLeonard\G\printLineWithBreak;
+use function YoannLeonard\G\translate;
 
 class FightController extends Controller
 {
@@ -24,7 +24,7 @@ class FightController extends Controller
     public static function getInstance(): FightController
     {
         if (self::$instance === null) {
-            self::$instance = new FightController(Game::getInstance());
+            self::$instance = new FightController();
         }
         return self::$instance;
     }
@@ -43,58 +43,12 @@ class FightController extends Controller
     {
         $player = $fight->getPlayer();
         $entity = $fight->getEntity();
-        $entityController = EntityController::getInstance();
 
         while ($player->isAlive() && $entity->isAlive()) {
             clearScreen();
-            // displaying entity
-            printLine($entityController->renderEntity($entity));
-
-            printLine('Turn ' . $fight->getTurn() . ':');
-            printLine($player->getName() . ' has ' . $player->getHealth() . ' health left.');
-            printLine($entity->getEntityName() . ' has ' . $entity->getHealth() . ' health left.');
-
-            // Enemy chooses a random action
-            $entity->chooseRandomAction();
-            $enemyChoice = $entity->getMove()->getName();
-
-            // display enemy action
-            printLine($entity->getEntityName() . ' chose to ' . $enemyChoice);
-
-            $playerChoice = 'Check stats';
-
-            $playerActions = $player->getFightActions();
-
-            while (str_contains($playerChoice, 'Check')) {
-
-                $playerChoiceInMenu = Game::getInstance()->askChoice($playerActions);
-                $playerChoice = $playerActions[$playerChoiceInMenu - 1];
-
-                switch($playerChoice) {
-                    case 'attack':
-                        $player->chooseActionFromString('attack');
-                        break;
-                    case 'defend':
-                        $player->chooseActionFromString('defend');
-                        break;
-                    case 'flee':
-                        $player->chooseActionFromString('flee');
-                        break;
-                    case 'Check stats':
-                        $player->displayStats();
-                        break;
-                    case 'Check inventory':
-                        if ($player->getInventory()->isEmpty()) {
-                            printLine('Your inventory is empty.');
-                            break;
-                        }
-                        $this->getGame()->inventory();
-                        break;
-                }
-            }
-
-            // display player action
-            printLine($player->getName() . ' chose to ' . $player->getMove()->getName());
+            $this->displayFightStatus($fight);
+            $this->handleEntityTurn($fight);
+            $this->handlePlayerTurn($fight);
 
             // get bonus from moves
             $entity->getMove()->getBonus();
@@ -120,11 +74,86 @@ class FightController extends Controller
         }
 
         if ($player->isAlive()) {
-            printLine($player->getName() . ' won the fight!');
+            printLine($player->getName() . ' ' . translate('won the fight!'));
             $this->endFight($fight);
         } else {
-            printLine($entity->getEntityName() . ' won the fight!');
+            printLine($entity->getEntityName() . ' ' . translate('won the fight!'));
         }
+    }
+
+    public function displayFightStatus(Fight $fight): void
+    {
+        $player = $fight->getPlayer();
+        $entity = $fight->getEntity();
+        $entityController = EntityController::getInstance();
+
+        // displaying entity
+        printLine($entityController->renderEntity($entity));
+
+        printLine(translate('Turn') . ' ' . $fight->getTurn() . ':');
+        printLine(
+            $player->getName() . ' ' . translate('has') . ' ' . $player->getHealth() . ' ' .
+            translate('health left.'));
+        printLine(
+            $entity->getEntityName() . ' ' . translate('has') . ' ' . $entity->getHealth() . ' ' .
+            translate('health left.'));
+    }
+
+    public function handleEntityTurn(Fight $fight): void
+    {
+        $entity = $fight->getEntity();
+
+        // Enemy chooses a random action
+        $entity->chooseRandomAction();
+        $enemyChoice = $entity->getMove()->getName();
+
+        // display enemy action
+        printLine($entity->getEntityName() . ' ' . translate('chose to') . ' ' . $enemyChoice);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function handlePlayerTurn(Fight $fight): void
+    {
+        $player = $fight->getPlayer();
+        $playerChoice = translate('Check stats');
+        $playerActions = $player->getFightActions();
+
+        while (str_contains($playerChoice, translate('Check'))) {
+
+            $playerChoiceInMenu = Game::getInstance()->askChoice($playerActions);
+            $playerChoice = $playerActions[$playerChoiceInMenu - 1];
+
+            switch($playerChoice) {
+                case translate('attack'):
+                    $player->chooseActionFromString('attack');
+                    break;
+                case translate('defend'):
+                    $player->chooseActionFromString('defend');
+                    break;
+                case translate('flee'):
+                    $player->chooseActionFromString('flee');
+                    break;
+                case translate('Check stats'):
+                    $player->displayStats();
+                    break;
+                case translate('Check inventory'):
+                    if ($player->getInventory()->isEmpty()) {
+                        printLine(translate('Your inventory is empty.'));
+                        break;
+                    }
+                    $this->getGame()->inventory();
+                    break;
+
+                default:
+                    printLine(translate('Invalid choice'));
+                    exit('KO');
+            }
+        }
+
+        // display player action
+        printLine($player->getName() . ' ' . translate('chose to') . ' ' . $player->getMove()->getName());
     }
 
     public function endFight(Fight $fight): void
@@ -134,11 +163,15 @@ class FightController extends Controller
         $player = $fight->getPlayer();
         $entity = $fight->getEntity();
 
-        printLine($player->getName() . ' gained ' . $entity->getExperience() . ' experience and ' . $entity->getGold() . ' gold!');
+        printLine(
+            $player->getName() . ' ' . translate('gained') . ' ' . $entity->getExperience() .
+            ' ' . translate('experience') . ' ' . translate('and') . ' ' .
+            $entity->getGold() . ' ' . translate('gold') . '!'
+        );
         $player->addGold($entity->getGold());
 
         if ($player->addExperience($entity->getExperience())) {
-            printLine($player->getName() . ' gained a level!');
+            printLine($player->getName() . ' ' . translate('gained a level!'));
             $player->displayStats();
         }
 

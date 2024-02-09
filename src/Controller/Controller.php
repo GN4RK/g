@@ -8,7 +8,7 @@ abstract class Controller
 {
     private Game $game;
 
-    public function __construct(Game $game)
+    public function __construct()
     {
         $this->game = Game::getInstance();
     }
