@@ -5,9 +5,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use YoannLeonard\G\Game;
 
-//define('LANG', 'en_EN'); // default language (english)
-define('LANG', 'fr_FR');
-
 function readInput(string $prompt = ''): string
 {
     printText($prompt);
@@ -98,6 +95,9 @@ function pressEnterToContinue(): void
     readInput();
 }
 
+/**
+ * @throws \Exception
+ */
 function main(): void
 {
     $game = Game::getInstance();
@@ -108,5 +108,31 @@ function translate(string $key): string
     $translations = include(__DIR__ . '/src/translations/' . LANG . '.php');
     return $translations[$key];
 }
+
+function chooseLanguage(): void
+{
+    $languages = [
+        'en_EN' => 'English',
+        'fr_FR' => 'Français',
+    ];
+    $i = 1;
+    foreach ($languages as $key => $language) {
+        printLine($i . '. ' . $language);
+        $i++;
+    }
+    $choice = (int)readInput('Choose a language: ');
+
+    $i = 1;
+    foreach ($languages as $key => $language) {
+        if ($i === $choice) {
+            define('LANG', $key);
+            return;
+        }
+        $i++;
+    }
+    chooseLanguage();
+}
+
+chooseLanguage();
 
 main();
