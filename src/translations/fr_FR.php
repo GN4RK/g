@@ -4,7 +4,7 @@ return [
     'welcome' => 'Bienvenue sur le [yellow]Jeu[reset] !',
     'What do you want to do?' => 'Que voulez-vous faire ?',
     'start a new game' => 'Commencer une nouvelle partie',
-    'load a saved game' => 'Chargée une partie sauvegardée',
+    'load a saved game' => 'Charger une partie sauvegardée',
     'enter your name' => 'Entrez votre nom : ',
     'enter your health' => 'Entrez votre santé : ',
     'enter your attack' => 'Entrez votre attaque : ',
