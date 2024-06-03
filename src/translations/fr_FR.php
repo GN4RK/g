@@ -33,8 +33,8 @@ return [
     'Please enter a valid integer between ' => 'Veuillez entrer un entier entre ',
     'and' => 'et',
     'Press enter to continue...' => 'Appuyez sur entrée pour continuer...',
-    'Check stats' => 'Vérifier les stats',
-    'Check inventory' => 'Vérifier l\'inventaire',
+    'Check stats' => 'Voir les stats',
+    'Check inventory' => 'Voir l\'inventaire',
     'Save and quit' => 'Sauvegarder et quitter',
     'Go to the shop' => 'Aller à la boutique',
     'Go to the sewer' => 'Aller dans les égouts',
@@ -47,7 +47,7 @@ return [
     'Invalid choice' => 'Choix invalide',
     'Use' => 'Utiliser',
     'View' => 'Voir',
-    'Drop' => 'Laisser tomber',
+    'Drop' => 'Jeter',
     'Buy' => 'Acheter',
     'Sell' => 'Vendre',
     'Talk' => 'Parler',
@@ -97,8 +97,8 @@ return [
     'gained a level!' => 'a gagné un niveau !',
 
     'You looted' => 'Vous avez récupéré',
-    "You can't drop this item" => "Vous ne pouvez pas laisser tomber cet objet",
-    'dropped' => 'lâché',
+    "You can't drop this item" => "Vous ne pouvez pas jeter cet objet",
+    'dropped' => 'jeté',
 
 
 
