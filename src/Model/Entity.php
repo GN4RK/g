@@ -42,6 +42,7 @@ class Entity
         $this->entityName = end($nameParts);
         $this->name = $this->entityName;
 
+        $this->move = new Attack($this);
         $this->moveset = new Moveset();
         $this->inventory = new Inventory();
     }
@@ -149,9 +150,6 @@ class Entity
 
     public function getMove(): Move
     {
-        if ($this->move === null) {
-            return new Attack($this);
-        }
         return $this->move;
     }
 
