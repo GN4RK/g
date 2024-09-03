@@ -100,6 +100,11 @@ return [
     'You can\'t drop this item' => 'You can\'t drop this item',
     'dropped' => 'dropped',
 
+    'attacks' => 'attacks',
+    'for' => 'for',
+    'damage' => 'damage',
+    'attacking' => 'attacking',
+    'is defending' => 'is defending',
 
 
 ];

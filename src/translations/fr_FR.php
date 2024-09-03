@@ -100,6 +100,11 @@ return [
     "You can't drop this item" => "Vous ne pouvez pas jeter cet objet",
     'dropped' => 'jeté',
 
+    'attacks' => 'attaque',
+    'for' => 'pour',
+    'damage' => 'dégâts',
+    'attacking' => 'attaque',
+    'is defending' => 'se défend',
 
 
 ];
