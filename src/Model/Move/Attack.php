@@ -12,7 +12,7 @@ class Attack extends Move
 {
     public function __construct(Entity $entity)
     {
-        parent::__construct(translate('attack'), translate("attacking"), $entity);
+        parent::__construct('attack',"attacking", $entity);
     }
 
     public function apply(Entity $entity): void

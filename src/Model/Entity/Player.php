@@ -86,7 +86,8 @@ class Player extends Entity
             $this->getDefenseStatus(),
             translate("Status    : ").parent::getStatus(),
             translate("Experience: ").parent::getExperience(),
-            translate("Gold      : ").parent::getGold()
+            // yellow text for gold
+            "[yellow]". translate("Gold      : ").parent::getGold() . "[reset]"
         ];
     }
     
